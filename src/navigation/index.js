@@ -6,6 +6,7 @@ import Auth from '../screens/Auth';
 import HomeScreen from '../screens/HomeScreen';
 import SignInScreen from '../screens/Auth/SignInScreen';
 import RestorePasswordScreen from '../screens/Auth/RestorePasswordScreen';
+import ConfirmCodeScreen from '../screens/Auth/ConfirmCodeScreen';
 
 const AppDrawerNavigation = createDrawerNavigator({
   TourList: {
@@ -68,6 +69,12 @@ const AppNavigation = createStackNavigator(
     },
     RestorePassword: {
       screen: RestorePasswordScreen,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    ConfirmCode: {
+      screen: ConfirmCodeScreen,
       navigationOptions: {
         header: null,
       },

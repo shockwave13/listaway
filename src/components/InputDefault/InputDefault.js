@@ -29,7 +29,7 @@ class InputDefault extends Component {
           color: activeColor,
         }}
         label={this.props.label}
-        labelStyle={styles.label}
+        labelStyle={[styles.label, {color: activeColor}]}
         inputContainerStyle={{borderColor: activeColor, height: 40}}
         containerStyle={styles.container}
         onFocus={() => this.onChangeColor(colors.LIGHT_BLUE)}

@@ -68,7 +68,7 @@ class SignInScreen extends Component {
               </View>
             </View>
             <View style={styles.block}>
-              <LinearButton title="Login" />
+              <LinearButton title="LOGIN" />
             </View>
           </View>
         </ScrollView>

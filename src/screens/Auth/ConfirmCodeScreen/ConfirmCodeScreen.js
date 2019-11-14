@@ -10,11 +10,11 @@ import {globalStyles} from '../../../constants';
 
 import styles from './styles';
 
-class RestorePasswordScreen extends Component {
+class ConfirmCodeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
+      code: '',
     };
   }
 
@@ -31,23 +31,23 @@ class RestorePasswordScreen extends Component {
         <View style={globalStyles.containerBody}>
           <View style={globalStyles.block}>
             <GradientText style={globalStyles.headerTitle}>
-              Forgot password
+              Confirm code
             </GradientText>
             <View style={{marginVertical: 5}}>
               <Text style={globalStyles.underHeaderHint}>
-                Enter your email address and we will send you a verification
-                code to reset your password.
+                Enter the verification code sent to your email address to reset
+                password.
               </Text>
             </View>
           </View>
           <View style={globalStyles.block}>
-            <InputDefault label="Email" onChangeText={this.onChangeState} />
+            <InputDefault
+              label="Enter code"
+              onChangeText={this.onChangeState}
+            />
           </View>
           <View style={globalStyles.block}>
-            <LinearButton
-              title="CONTINUE"
-              onPress={() => this.props.navigation.navigate('ConfirmCode')}
-            />
+            <LinearButton title="CONFIRM" />
           </View>
         </View>
       </SafeAreaView>
@@ -55,4 +55,4 @@ class RestorePasswordScreen extends Component {
   }
 }
 
-export default RestorePasswordScreen;
+export default ConfirmCodeScreen;

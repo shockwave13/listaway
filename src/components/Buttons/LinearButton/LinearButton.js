@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {StyleSheet} from 'react-native';
 import {Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -19,22 +20,31 @@ class LinearButton extends Component {
           end: {x: 1, y: 0},
         }}
         title={this.props.title}
-        titleStyle={{fontSize: 18, fontFamily: fonts.notoBold}}
-        buttonStyle={{
-          height: 50,
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-
-          elevation: 5,
-        }}
+        titleStyle={styles.btnTitle}
+        buttonStyle={styles.btnStyle}
+        onPress={this.props.onPress}
       />
     );
   }
 }
+
+const styles = StyleSheet.create({
+  btnTitle: {
+    fontSize: 18,
+    fontFamily: fonts.notoBold,
+  },
+  btnStyle: {
+    height: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
+});
 
 export default LinearButton;

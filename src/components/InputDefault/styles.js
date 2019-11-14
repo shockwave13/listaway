@@ -7,7 +7,7 @@ export default StyleSheet.create({
     fontWeight: '300',
     fontSize: 18,
     fontFamily: fonts.notoRegular,
-    color: colors.LIGHT_GREEN,
+    color: 'silver',
   },
   container: {
     paddingHorizontal: 0,
