@@ -8,6 +8,8 @@ import SignInScreen from '../screens/Auth/SignInScreen';
 import RestorePasswordScreen from '../screens/Auth/RestorePasswordScreen';
 import ConfirmCodeScreen from '../screens/Auth/ConfirmCodeScreen';
 import ChangePasswordScreen from '../screens/Auth/ChangePasswordScreen';
+import SignUpScreen from '../screens/Auth/SignUpScreen';
+import CreateAccountScreen from '../screens/Auth/CreateAccountScreen';
 
 const AppDrawerNavigation = createDrawerNavigator({
   TourList: {
@@ -58,42 +60,35 @@ const AppNavigation = createStackNavigator(
   {
     Auth: {
       screen: Auth,
-      navigationOptions: {
-        header: null,
-      },
     },
     SignIn: {
       screen: SignInScreen,
-      navigationOptions: {
-        header: null,
-      },
     },
     RestorePassword: {
       screen: RestorePasswordScreen,
-      navigationOptions: {
-        header: null,
-      },
     },
     ConfirmCode: {
       screen: ConfirmCodeScreen,
-      navigationOptions: {
-        header: null,
-      },
     },
     ChangePassword: {
       screen: ChangePasswordScreen,
-      navigationOptions: {
-        header: null,
-      },
+    },
+    SignUp: {
+      screen: SignUpScreen,
+    },
+    CreateAccount: {
+      screen: CreateAccountScreen,
     },
     // New navigation
     Home: {
       screen: AppDrawerNavigation,
-      navigationOptions: {header: null},
     },
   },
   {
     initialRouteName: 'Auth',
+    defaultNavigationOptions: {
+      header: null,
+    },
   },
 );
 

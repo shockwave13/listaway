@@ -48,6 +48,7 @@ class Auth extends Component {
               titleStyle={styles.btnTitle}
               buttonStyle={styles.btnStyle}
               containerStyle={styles.btnContainerStyle}
+              onPress={() => this.props.navigation.navigate('SignUp')}
             />
           </View>
         </SafeAreaView>
