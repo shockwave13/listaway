@@ -45,31 +45,6 @@ class Auth extends Component {
               buttonStyle={styles.btnStyle}
               containerStyle={styles.btnContainerStyle}
             />
-            <Button
-              icon={{
-                name: 'logo-facebook',
-                type: 'ionicon',
-                color: 'white',
-                size: 32,
-                containerStyle: {marginHorizontal: 10},
-              }}
-              title="Continue with Facebook"
-              titleStyle={styles.btnTitle}
-              buttonStyle={styles.btnStyleFacebook}
-              containerStyle={styles.btnContainerStyle}
-            />
-            <Button
-              icon={{
-                name: 'logo-google',
-                type: 'ionicon',
-                color: colors.LIGHT_BLUE,
-                containerStyle: {marginHorizontal: 10},
-              }}
-              title="Continue with Google"
-              titleStyle={styles.btnTitleWhite}
-              buttonStyle={styles.btnStyleWhite}
-              containerStyle={styles.btnContainerStyle}
-            />
           </View>
         </SafeAreaView>
       </LinearGradient>

@@ -8,12 +8,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import {Button} from 'react-native-elements';
+
 import HeaderDefault from '../../../components/HeaderDefault';
 import InputDefault from '../../../components/InputDefault';
 import {LinearButton} from '../../../components/Buttons';
 import GradientText from '../../../components/GradientText';
 
-import {globalStyles} from '../../../constants';
+import {globalStyles, colors} from '../../../constants';
 import styles from './styles';
 
 class SignInScreen extends Component {
@@ -74,8 +76,36 @@ class SignInScreen extends Component {
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.block}>
+            <View style={{marginTop: 5}}>
               <LinearButton title="LOGIN" />
+
+              <View style={{marginTop: 20}}>
+                <Button
+                  icon={{
+                    name: 'logo-facebook',
+                    type: 'ionicon',
+                    color: 'white',
+                    size: 32,
+                    containerStyle: {marginHorizontal: 10},
+                  }}
+                  title="Continue with Facebook"
+                  titleStyle={styles.btnTitle}
+                  buttonStyle={styles.btnStyleFacebook}
+                  containerStyle={styles.btnContainerStyle}
+                />
+                <Button
+                  icon={{
+                    name: 'logo-google',
+                    type: 'ionicon',
+                    color: colors.LIGHT_BLUE,
+                    containerStyle: {marginHorizontal: 10},
+                  }}
+                  title="Continue with Google"
+                  titleStyle={styles.btnTitleWhite}
+                  buttonStyle={styles.btnStyle}
+                  containerStyle={styles.btnContainerStyle}
+                />
+              </View>
             </View>
           </View>
         </ScrollView>
