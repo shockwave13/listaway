@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, SafeAreaView, StatusBar, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StatusBar,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 
 import HeaderDefault from '../../../components/HeaderDefault';
 import InputDefault from '../../../components/InputDefault';
@@ -52,7 +59,12 @@ class SignInScreen extends Component {
                 onChangeText={this.onChangeState}
               />
               <View style={{alignItems: 'flex-end', marginVertical: 15}}>
-                <Text style={styles.hint}>Forgot password?</Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate('RestorePassword')
+                  }>
+                  <Text style={styles.hint}>Forgot password?</Text>
+                </TouchableOpacity>
               </View>
             </View>
             <View style={styles.block}>

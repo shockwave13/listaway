@@ -4,13 +4,24 @@ import fonts from './fonts';
 const globalStyles = StyleSheet.create({
   headerTitle: {
     fontWeight: 'bold',
-    fontSize: 42,
+    fontSize: 36,
     fontFamily: fonts.notoBold,
   },
   underHeaderHint: {
     color: 'silver',
     fontSize: 18,
     fontFamily: fonts.notoRegular,
+  },
+  block: {
+    marginTop: 20,
+  },
+  containerFull: {
+    flex: 1,
+  },
+  containerBody: {
+    flex: 1,
+    paddingHorizontal: 15,
+    justifyContent: 'center',
   },
 });
 
