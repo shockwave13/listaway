@@ -51,24 +51,29 @@ const AppDrawerNavigation = createDrawerNavigator({
   },
 });
 
-const AppNavigation = createStackNavigator({
-  Auth: {
-    screen: Auth,
-    navigationOptions: {
-      header: null,
+const AppNavigation = createStackNavigator(
+  {
+    Auth: {
+      screen: Auth,
+      navigationOptions: {
+        header: null,
+      },
     },
-  },
-  SignIn: {
-    screen: SignInScreen,
-    navigationOptions: {
-      header: null,
+    SignIn: {
+      screen: SignInScreen,
+      navigationOptions: {
+        header: null,
+      },
     },
-  },
 
-  Home: {
-    screen: AppDrawerNavigation,
-    navigationOptions: {header: null},
+    Home: {
+      screen: AppDrawerNavigation,
+      navigationOptions: {header: null},
+    },
   },
-});
+  {
+    initialRouteName: 'Auth',
+  },
+);
 
 export default createAppContainer(AppNavigation);

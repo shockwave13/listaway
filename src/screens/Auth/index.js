@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, Image, StyleSheet, SafeAreaView} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  SafeAreaView,
+  StatusBar,
+} from 'react-native';
 import {Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -15,6 +22,7 @@ class Auth extends Component {
       <LinearGradient
         colors={[colors.LIGHT_GREEN, colors.LIGHT_BLUE]}
         style={styles.containerFull}>
+        <StatusBar translucent backgroundColor="transparent" />
         <SafeAreaView style={styles.container}>
           <View style={styles.containerLogo}>
             <Image
