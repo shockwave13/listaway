@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
-import {View, Text, SafeAreaView, StatusBar} from 'react-native';
-import {Button, Input} from 'react-native-elements';
-import LinearGradient from 'react-native-linear-gradient';
-import {LinearTextGradient} from 'react-native-text-gradient';
+import {View, Text, SafeAreaView, StatusBar, ScrollView} from 'react-native';
 
 import HeaderDefault from '../../../components/HeaderDefault';
 import InputDefault from '../../../components/InputDefault';
 import {LinearButton} from '../../../components/Buttons';
+import GradientText from '../../../components/GradientText';
 
-import {colors, fonts, globalStyles} from '../../../constants';
+import {globalStyles} from '../../../constants';
 import styles from './styles';
-import {ScrollView} from 'react-native-gesture-handler';
 
 class SignInScreen extends Component {
   constructor(props) {
@@ -39,15 +36,9 @@ class SignInScreen extends Component {
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <View style={styles.container}>
             <View styles={styles.block}>
-              <LinearTextGradient
-                style={globalStyles.headerTitle}
-                locations={[0, 1]}
-                colors={[colors.LIGHT_GREEN, colors.LIGHT_BLUE]}
-                start={{x: 0, y: 0}}
-                useViewFrame={false}
-                end={{x: 1, y: 0}}>
-                <Text>Sign In</Text>
-              </LinearTextGradient>
+              <GradientText style={globalStyles.headerTitle}>
+                Sign In
+              </GradientText>
               <View style={{marginVertical: 5}}>
                 <Text style={globalStyles.underHeaderHint}>
                   Login first to continue
