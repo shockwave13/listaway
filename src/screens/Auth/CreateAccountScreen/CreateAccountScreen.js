@@ -6,8 +6,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   StatusBar,
+  ScrollView,
 } from 'react-native';
-import {CheckBox} from 'react-native-elements';
+import {Icon} from 'react-native-elements';
 
 import HeaderDefault from '../../../components/HeaderDefault';
 import GradientText from '../../../components/GradientText';
@@ -40,22 +41,42 @@ class CreateAccoutScreen extends Component {
     const {title, directTel, website, brokerageName, officeTel} = this.state;
     return (
       <SafeAreaView style={globalStyles.containerFull}>
-        <KeyboardAvoidingView
-          style={globalStyles.containerFull}
-          behavior="padding"
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500}>
-          <HeaderDefault />
-          <StatusBar
-            translucent={false}
-            barStyle="dark-content"
-            backgroundColor="white"
-          />
+        <HeaderDefault />
+        <StatusBar
+          translucent={false}
+          barStyle="dark-content"
+          backgroundColor="white"
+        />
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingBottom: 20,
+          }}>
           <View style={globalStyles.containerBody}>
+            <View style={[globalStyles.block, {alignItems: 'center'}]}>
+              <View
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 50,
+                  backgroundColor: colors.UNDER,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Icon
+                  name="ios-person"
+                  type="ionicon"
+                  color="white"
+                  size={48}
+                />
+              </View>
+            </View>
             <View style={globalStyles.block}>
               <GradientText style={globalStyles.headerTitle}>
                 Create Accout
               </GradientText>
             </View>
+
             <View style={globalStyles.block}>
               <InputDefault
                 name="title"
@@ -64,28 +85,24 @@ class CreateAccoutScreen extends Component {
                 onChangeText={this.onChangeState}
               />
               <InputDefault
-                secureTextEntry
                 name="directTel"
                 value={directTel}
                 label="Direct Tel"
                 onChangeText={this.onChangeState}
               />
               <InputDefault
-                secureTextEntry
                 name="website"
                 value={website}
                 label="Website"
                 onChangeText={this.onChangeState}
               />
               <InputDefault
-                secureTextEntry
                 name="brokerageName"
                 value={brokerageName}
                 label="Brokerage Name"
                 onChangeText={this.onChangeState}
               />
               <InputDefault
-                secureTextEntry
                 name="officeTel"
                 value={officeTel}
                 label="Office Tel"
@@ -97,7 +114,7 @@ class CreateAccoutScreen extends Component {
               <LinearButton title="SAVE" />
             </View>
           </View>
-        </KeyboardAvoidingView>
+        </ScrollView>
       </SafeAreaView>
     );
   }

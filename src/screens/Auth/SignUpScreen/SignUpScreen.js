@@ -64,7 +64,6 @@ class SignUpScreen extends Component {
                 onChangeText={this.onChangeState}
               />
               <InputDefault
-                secureTextEntry
                 name="email"
                 value={email}
                 label="Email"
