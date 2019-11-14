@@ -35,6 +35,7 @@ class InputDefault extends Component {
         onFocus={() => this.onChangeColor(colors.LIGHT_BLUE)}
         onBlur={() => this.onChangeColor('silver')}
         onChangeText={text => this.props.onChangeText(this.props.name, text)}
+        secureTextEntry={this.props.secureTextEntry}
       />
     );
   }

@@ -22,7 +22,11 @@ class Auth extends Component {
       <LinearGradient
         colors={[colors.LIGHT_GREEN, colors.LIGHT_BLUE]}
         style={styles.containerFull}>
-        <StatusBar translucent backgroundColor="transparent" />
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="light-content"
+        />
         <SafeAreaView style={styles.container}>
           <View style={styles.containerLogo}>
             <Image

@@ -6,6 +6,8 @@ import {
   StatusBar,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 
 import {Button} from 'react-native-elements';
@@ -62,6 +64,7 @@ class SignInScreen extends Component {
                 onChangeText={this.onChangeState}
               />
               <InputDefault
+                secureTextEntry
                 name="password"
                 value={this.state.password}
                 label="Password"

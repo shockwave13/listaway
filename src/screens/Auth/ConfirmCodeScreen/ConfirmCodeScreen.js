@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, SafeAreaView, Text} from 'react-native';
+import {View, SafeAreaView, Text, KeyboardAvoidingView} from 'react-native';
 
 import HeaderDefault from '../../../components/HeaderDefault';
 import GradientText from '../../../components/GradientText';
@@ -27,34 +27,39 @@ class ConfirmCodeScreen extends Component {
   render() {
     return (
       <SafeAreaView style={globalStyles.containerFull}>
-        <HeaderDefault />
-        <View style={globalStyles.containerBody}>
-          <View style={globalStyles.block}>
-            <GradientText style={globalStyles.headerTitle}>
-              Confirm code
-            </GradientText>
-            <View style={{marginVertical: 5}}>
-              <Text style={globalStyles.underHeaderHint}>
-                Enter the verification code sent to your email address to reset
-                password.
-              </Text>
+        <KeyboardAvoidingView
+          style={globalStyles.containerFull}
+          behavior="padding"
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500}>
+          <HeaderDefault />
+          <View style={globalStyles.containerBody}>
+            <View style={globalStyles.block}>
+              <GradientText style={globalStyles.headerTitle}>
+                Confirm code
+              </GradientText>
+              <View style={{marginVertical: 5}}>
+                <Text style={globalStyles.underHeaderHint}>
+                  Enter the verification code sent to your email address to
+                  reset password.
+                </Text>
+              </View>
+            </View>
+            <View style={globalStyles.block}>
+              <InputDefault
+                name="code"
+                value={this.state.code}
+                label="Enter code"
+                onChangeText={this.onChangeState}
+              />
+            </View>
+            <View style={globalStyles.block}>
+              <LinearButton
+                title="CONFIRM"
+                onPress={() => this.props.navigation.navigate('ChangePassword')}
+              />
             </View>
           </View>
-          <View style={globalStyles.block}>
-            <InputDefault
-              name="code"
-              value={this.state.code}
-              label="Enter code"
-              onChangeText={this.onChangeState}
-            />
-          </View>
-          <View style={globalStyles.block}>
-            <LinearButton
-              title="CONFIRM"
-              onPress={() => this.props.navigation.navigate('ChangePassword')}
-            />
-          </View>
-        </View>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }
