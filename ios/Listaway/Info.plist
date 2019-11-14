@@ -71,6 +71,8 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>NotoSans-Bold.ttf</string>
+		<string>NotoSans.ttf</string>
 	</array>
 </dict>
 </plist>

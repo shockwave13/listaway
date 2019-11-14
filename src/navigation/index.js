@@ -2,10 +2,9 @@ import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 
-import LoginScreen from '../screens/LoginScreen';
-import ResetEmailScreen from '../screens/ResetEmailScreen';
-import SignUpScreen from '../screens/SignUpScreen';
+import Auth from '../screens/Auth';
 import HomeScreen from '../screens/HomeScreen';
+import SignInScreen from '../screens/Auth/SignInScreen';
 
 const AppDrawerNavigation = createDrawerNavigator({
   TourList: {
@@ -53,24 +52,19 @@ const AppDrawerNavigation = createDrawerNavigator({
 });
 
 const AppNavigation = createStackNavigator({
-  Login: {
-    screen: LoginScreen,
+  Auth: {
+    screen: Auth,
     navigationOptions: {
       header: null,
     },
   },
-  ResetEmail: {
-    screen: ResetEmailScreen,
+  SignIn: {
+    screen: SignInScreen,
     navigationOptions: {
-      title: 'Reset email',
+      header: null,
     },
   },
-  SignUp: {
-    screen: SignUpScreen,
-    navigationOptions: {
-      title: 'Create your profile',
-    },
-  },
+
   Home: {
     screen: AppDrawerNavigation,
     navigationOptions: {header: null},
