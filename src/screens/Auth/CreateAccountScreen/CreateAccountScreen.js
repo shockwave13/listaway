@@ -40,19 +40,17 @@ class CreateAccoutScreen extends Component {
   render() {
     const {title, directTel, website, brokerageName, officeTel} = this.state;
     return (
-      <SafeAreaView style={globalStyles.containerFull}>
-        <HeaderDefault />
-        <StatusBar
-          translucent={false}
-          barStyle="dark-content"
-          backgroundColor="white"
-        />
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            paddingBottom: 20,
-          }}>
-          <View style={globalStyles.containerBody}>
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={{flexGrow: 1, paddingBottom: 40}}>
+        <SafeAreaView style={globalStyles.containerFull}>
+          <HeaderDefault />
+          <StatusBar
+            translucent={false}
+            barStyle="dark-content"
+            backgroundColor="white"
+          />
+          <View style={{flex: 1, paddingHorizontal: 15}}>
             <View style={[globalStyles.block, {alignItems: 'center'}]}>
               <View
                 style={{
@@ -114,8 +112,8 @@ class CreateAccoutScreen extends Component {
               <LinearButton title="SAVE" />
             </View>
           </View>
-        </ScrollView>
-      </SafeAreaView>
+        </SafeAreaView>
+      </ScrollView>
     );
   }
 }
