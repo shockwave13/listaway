@@ -53,8 +53,15 @@ class SignInScreen extends Component {
               </View>
             </View>
             <View style={styles.block}>
-              <InputDefault label="Email" onChangeText={this.onChangeState} />
               <InputDefault
+                name="email"
+                value={this.state.email}
+                label="Email"
+                onChangeText={this.onChangeState}
+              />
+              <InputDefault
+                name="password"
+                value={this.state.password}
                 label="Password"
                 onChangeText={this.onChangeState}
               />

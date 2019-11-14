@@ -42,12 +42,17 @@ class ConfirmCodeScreen extends Component {
           </View>
           <View style={globalStyles.block}>
             <InputDefault
+              name="code"
+              value={this.state.code}
               label="Enter code"
               onChangeText={this.onChangeState}
             />
           </View>
           <View style={globalStyles.block}>
-            <LinearButton title="CONFIRM" />
+            <LinearButton
+              title="CONFIRM"
+              onPress={() => this.props.navigation.navigate('ChangePassword')}
+            />
           </View>
         </View>
       </SafeAreaView>

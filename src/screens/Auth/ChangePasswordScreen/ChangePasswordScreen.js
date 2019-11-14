@@ -10,11 +10,12 @@ import {globalStyles} from '../../../constants';
 
 import styles from './styles';
 
-class RestorePasswordScreen extends Component {
+class ChangePasswordScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
+      password: '',
+      confirm_password: '',
     };
   }
 
@@ -31,28 +32,30 @@ class RestorePasswordScreen extends Component {
         <View style={globalStyles.containerBody}>
           <View style={globalStyles.block}>
             <GradientText style={globalStyles.headerTitle}>
-              Forgot password
+              Change password
             </GradientText>
             <View style={{marginVertical: 5}}>
               <Text style={globalStyles.underHeaderHint}>
-                Enter your email address and we will send you a verification
-                code to reset your password.
+                Enter your new password and confirm.
               </Text>
             </View>
           </View>
           <View style={globalStyles.block}>
             <InputDefault
-              name={'email'}
-              value={this.state.email}
-              label="Email"
+              name="password"
+              value={this.state.password}
+              label="New password"
+              onChangeText={this.onChangeState}
+            />
+            <InputDefault
+              name="confirm_password"
+              value={this.state.confirm_password}
+              label="Confirm password"
               onChangeText={this.onChangeState}
             />
           </View>
           <View style={globalStyles.block}>
-            <LinearButton
-              title="CONTINUE"
-              onPress={() => this.props.navigation.navigate('ConfirmCode')}
-            />
+            <LinearButton title="CONTINUE" />
           </View>
         </View>
       </SafeAreaView>
@@ -60,4 +63,4 @@ class RestorePasswordScreen extends Component {
   }
 }
 
-export default RestorePasswordScreen;
+export default ChangePasswordScreen;
