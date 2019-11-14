@@ -72,7 +72,7 @@ const AppNavigation = createStackNavigator(
     },
   },
   {
-    initialRouteName: 'Auth',
+    initialRouteName: 'SignIn',
   },
 );
 
