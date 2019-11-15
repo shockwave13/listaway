@@ -82,7 +82,10 @@ class SignInScreen extends Component {
               </View>
             </View>
             <View style={{marginTop: 5}}>
-              <LinearButton title="LOGIN" />
+              <LinearButton
+                title="LOGIN"
+                onPress={() => this.props.navigation.navigate('Home')}
+              />
 
               <View style={{marginTop: 20}}>
                 <LoginButton
@@ -95,23 +98,12 @@ class SignInScreen extends Component {
                       AccessToken.getCurrentAccessToken().then(data => {
                         console.log(data.accessToken.toString());
                       });
+                      this.props.navigation.navigate('Home');
                     }
                   }}
                   onLogoutFinished={() => console.log('logout.')}
                 />
-                <Button
-                  icon={{
-                    name: 'logo-facebook',
-                    type: 'ionicon',
-                    color: 'white',
-                    size: 32,
-                    containerStyle: {marginHorizontal: 10},
-                  }}
-                  title="Continue with Facebook"
-                  titleStyle={styles.btnTitle}
-                  buttonStyle={styles.btnStyleFacebook}
-                  containerStyle={styles.btnContainerStyle}
-                />
+
                 <Button
                   icon={{
                     name: 'logo-google',
