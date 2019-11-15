@@ -17,6 +17,8 @@ import InputDefault from '../../../components/InputDefault';
 import {LinearButton} from '../../../components/Buttons';
 import GradientText from '../../../components/GradientText';
 
+import {LoginButton, AccessToken} from 'react-native-fbsdk';
+
 import {globalStyles, colors} from '../../../constants';
 import styles from './styles';
 
@@ -83,6 +85,20 @@ class SignInScreen extends Component {
               <LinearButton title="LOGIN" />
 
               <View style={{marginTop: 20}}>
+                <LoginButton
+                  onLoginFinished={(error, result) => {
+                    if (error) {
+                      console.log('login has error: ' + result.error);
+                    } else if (result.isCancelled) {
+                      console.log('login is cancelled.');
+                    } else {
+                      AccessToken.getCurrentAccessToken().then(data => {
+                        console.log(data.accessToken.toString());
+                      });
+                    }
+                  }}
+                  onLogoutFinished={() => console.log('logout.')}
+                />
                 <Button
                   icon={{
                     name: 'logo-facebook',
