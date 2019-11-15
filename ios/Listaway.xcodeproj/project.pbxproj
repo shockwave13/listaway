@@ -22,6 +22,7 @@
 		685B053C22F7C05306FD6247 /* libPods-Listaway-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4D3B76E9129A1BF2D9B0AC1 /* libPods-Listaway-tvOS.a */; };
 		8670E7579CAA075143D213E4 /* libPods-ListawayTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CF00A5524F0CBCD32B595BA /* libPods-ListawayTests.a */; };
 		B680FB0B2A814269BF9DBD2D /* NotoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49BF590FE89A4152B0E731FD /* NotoSans-Bold.ttf */; };
+		CECB21E3237EF2B200F3619D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CECB21E2237EF2B200F3619D /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		C067E30D65A04061ADE51414 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		C360AEE33B8A7E95829EB823 /* Pods-Listaway-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Listaway-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Listaway-tvOS/Pods-Listaway-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C80107A4C13B430D833A6901 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
+		CECB21E2237EF2B200F3619D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D4D3B76E9129A1BF2D9B0AC1 /* libPods-Listaway-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Listaway-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6621F565E769A7A625BABBF /* Pods-ListawayTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ListawayTests.debug.xcconfig"; path = "Target Support Files/Pods-ListawayTests/Pods-ListawayTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -177,6 +179,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				CECB21E2237EF2B200F3619D /* GoogleService-Info.plist */,
 			);
 			name = Listaway;
 			sourceTree = "<group>";
@@ -385,6 +388,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				CECB21E3237EF2B200F3619D /* GoogleService-Info.plist in Resources */,
 				B680FB0B2A814269BF9DBD2D /* NotoSans-Bold.ttf in Resources */,
 				223C18E43AA041D4843204DC /* NotoSans.ttf in Resources */,
 			);
@@ -430,6 +434,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Listaway/Pods-Listaway-resources.sh",
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -450,6 +455,7 @@
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
