@@ -6,11 +6,7 @@ import {
   StatusBar,
   ScrollView,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
-
-import {Button} from 'react-native-elements';
 
 import HeaderDefault from '../../../components/HeaderDefault';
 import InputDefault from '../../../components/InputDefault';
@@ -24,45 +20,44 @@ import {
   statusCodes,
 } from '@react-native-community/google-signin';
 
-import {globalStyles, colors} from '../../../constants';
+import {globalStyles} from '../../../constants';
 import styles from './styles';
+
+import {connect} from 'react-redux';
+import {setAuthKey} from '../../../actions/usersActions';
+
+import {
+  LoginWithEmailAndPassword,
+  LoginWithFacebook,
+  LoginWithGoogle,
+} from '../../../services/api';
 
 class SignInScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      login: '',
+      email: '',
       password: '',
-      userInfo: null,
-      gettingLoginStatus: true,
+      key: '',
     };
   }
 
   componentDidMount() {
-    //125486066869-cinc09kfjdqognn9ce57d65ojr2iiau7.apps.googleusercontent.com
+    if (this.props.users.authStatus) {
+      this.props.navigation.navigate('Home');
+    }
     GoogleSignin.configure({
-      //It is mandatory to call this method before attempting to call signIn()
       scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-      // Repleace with your webClientId generated from Firebase console
       webClientId:
         '125486066869-cinc09kfjdqognn9ce57d65ojr2iiau7.apps.googleusercontent.com',
     });
-    //Check if user is already signed in
-    this._isSignedIn();
   }
 
-  _isSignedIn = async () => {
-    const isSignedIn = await GoogleSignin.isSignedIn();
-    if (isSignedIn) {
-      //alert('User is already signed in');
-      //Get the User details as user is already signed in
-      this._getCurrentUserInfo();
-    } else {
-      //alert("Please Login");
-      console.log('Please Login');
+  componentDidUpdate() {
+    if (this.props.users.authStatus) {
+      this.props.navigation.navigate('Home');
     }
-    this.setState({gettingLoginStatus: false});
-  };
+  }
 
   onChangeState = (name, text) => {
     this.setState({
@@ -70,23 +65,7 @@ class SignInScreen extends Component {
     });
   };
 
-  _getCurrentUserInfo = async () => {
-    try {
-      const userInfo = await GoogleSignin.signInSilently();
-      console.log('User Info --> ', userInfo);
-      this.setState({userInfo: userInfo});
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-        alert('User has not signed in yet');
-        console.log('User has not signed in yet');
-      } else {
-        alert("Something went wrong. Unable to get user's info");
-        console.log("Something went wrong. Unable to get user's info");
-      }
-    }
-  };
-
-  _signIn = async () => {
+  handlePressLoginGoogle = async () => {
     //Prompts a modal to let the user sign in into your application.
     try {
       await GoogleSignin.hasPlayServices({
@@ -94,10 +73,11 @@ class SignInScreen extends Component {
         //Always resolves to true on iOS.
         showPlayServicesUpdateDialog: true,
       });
-      const userInfo = await GoogleSignin.signIn();
-      console.log('User Info --> ', userInfo);
-      this.setState({userInfo: userInfo});
-      this.props.navigation.navigate('Home');
+      await GoogleSignin.signIn();
+      const response = await GoogleSignin.getTokens();
+      const key = await loginWithGoogle(response.accessToken);
+
+      this.props.setAuth('google', key.key);
     } catch (error) {
       console.log('Message', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -117,10 +97,28 @@ class SignInScreen extends Component {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-      this.setState({userInfo: null}); // Remove the user from your app's state as well
     } catch (error) {
       console.error(error);
     }
+  };
+
+  handlePressLogin = async () => {
+    const {email, password} = this.state;
+    const response = await loginWithEmailAndPassword(email, password);
+
+    console.log(response);
+    if (
+      response.password === undefined &&
+      response.non_field_errors === undefined
+    ) {
+      this.props.setAuth('email', response.key);
+    }
+  };
+
+  handlePressLoginFacebook = async tokenFB => {
+    const key = await loginWithFacebook(tokenFB).then(response => response.key);
+
+    this.props.setAuth('facebook', key);
   };
 
   render() {
@@ -168,10 +166,7 @@ class SignInScreen extends Component {
               </View>
             </View>
             <View style={{marginTop: 5}}>
-              <LinearButton
-                title="LOGIN"
-                onPress={() => this.props.navigation.navigate('Home')}
-              />
+              <LinearButton title="LOGIN" onPress={this.handlePressLogin} />
 
               <View
                 style={{
@@ -180,7 +175,6 @@ class SignInScreen extends Component {
                   alignItems: 'center',
                 }}>
                 <LoginButton
-                  style={{flex: 1, height: 30, marginTop: 2}}
                   onLoginFinished={(error, result) => {
                     if (error) {
                       console.log('login has error: ' + result.error);
@@ -188,17 +182,17 @@ class SignInScreen extends Component {
                       console.log('login is cancelled.');
                     } else {
                       AccessToken.getCurrentAccessToken().then(data => {
-                        console.log('Token', data.accessToken.toString());
+                        this.handlePressLoginFacebook(data.accessToken);
                       });
-                      this.props.navigation.navigate('Home');
                     }
                   }}
                   onLogoutFinished={() => console.log('logout.')}
                 />
+
                 <GoogleSigninButton
-                  style={{flex: 1, height: 37}}
+                  style={{flex: 1}}
                   color={GoogleSigninButton.Color.Light}
-                  onPress={this._signIn}
+                  onPress={this.handlePressLoginGoogle}
                 />
               </View>
             </View>
@@ -209,4 +203,18 @@ class SignInScreen extends Component {
   }
 }
 
-export default SignInScreen;
+const mapStateToProps = state => {
+  return {
+    users: state.users,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setAuth: (type, key) => {
+      dispatch(setAuthKey(type, key));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInScreen);

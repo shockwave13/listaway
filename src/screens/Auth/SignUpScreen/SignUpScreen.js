@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {CheckBox} from 'react-native-elements';
+import {connect} from 'react-redux';
 
 import HeaderDefault from '../../../components/HeaderDefault';
 import GradientText from '../../../components/GradientText';
@@ -18,6 +19,10 @@ import {LinearButton} from '../../../components/Buttons';
 import {globalStyles, fonts, colors} from '../../../constants';
 
 import styles from './styles';
+
+import {registration} from '../../../services/api';
+
+import {setAuthKey} from '../../../actions/usersActions';
 
 class SignUpScreen extends Component {
   constructor(props) {
@@ -37,6 +42,19 @@ class SignUpScreen extends Component {
     });
   };
 
+  componentDidUpdate() {
+    if (this.props.users.authStatus) {
+      this.props.navigation.navigate('CreateAccount');
+    }
+  }
+
+  handlePressSignIn = async () => {
+    const {fullName, email, password} = this.state;
+    const key = await registration(fullName, email, password).then(
+      res => res.key,
+    );
+    this.props.setAuth('email', key);
+  };
   render() {
     const {fullName, email, password, confirmPassword} = this.state;
     return (
@@ -104,9 +122,7 @@ class SignUpScreen extends Component {
               <View style={globalStyles.block}>
                 <LinearButton
                   title="SIGN UP"
-                  onPress={() =>
-                    this.props.navigation.navigate('CreateAccount')
-                  }
+                  onPress={this.handlePressSignIn}
                 />
               </View>
             </View>
@@ -117,4 +133,18 @@ class SignUpScreen extends Component {
   }
 }
 
-export default SignUpScreen;
+const mapStateToProps = state => {
+  return {
+    users: state.users,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setAuth: (type, key) => {
+      dispatch(setAuthKey(type, key));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen);

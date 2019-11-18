@@ -23,6 +23,7 @@ class InputDefault extends Component {
     const {activeColor} = this.state;
     return (
       <Input
+        autoCapitalize={'none'}
         rightIcon={{
           name: 'check-circle',
           type: 'materila-community',
