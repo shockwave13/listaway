@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import HeaderDefault from '../../../components/HeaderDefault';
 import InputDefault from '../../../components/InputDefault';
@@ -76,6 +77,12 @@ class SignInScreen extends Component {
       response.non_field_errors === undefined
     ) {
       this.props.setAuth('email', response.key);
+    } else {
+      this.dropDownAlertRef.alertWithType(
+        'error',
+        'Error',
+        'Wrong password or email',
+      );
     }
   };
 
@@ -196,6 +203,7 @@ class SignInScreen extends Component {
             </View>
           </View>
         </ScrollView>
+        <DropdownAlert ref={ref => (this.dropDownAlertRef = ref)} />
       </SafeAreaView>
     );
   }
