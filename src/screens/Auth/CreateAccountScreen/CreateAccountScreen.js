@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {View, SafeAreaView, StatusBar, ScrollView} from 'react-native';
 import {Icon} from 'react-native-elements';
+import {connect} from 'react-redux';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import HeaderDefault from '../../../components/HeaderDefault';
 import GradientText from '../../../components/GradientText';
@@ -8,7 +10,6 @@ import InputDefault from '../../../components/InputDefault';
 import {LinearButton} from '../../../components/Buttons';
 
 import {globalStyles, fonts, colors} from '../../../constants';
-import {connect} from 'react-redux';
 import {updateProfile} from '../../../services/api';
 
 import styles from './styles';
@@ -42,17 +43,26 @@ class CreateAccoutScreen extends Component {
       officeTel,
     } = this.state;
 
-    const response = await updateProfile(
-      this.props.userId,
-      family_name,
-      title,
-      directTel,
-      website,
-      brokerageName,
-      officeTel,
-    );
-
-    this.props.navigation.navigate('Home');
+    if (family_name.length <= 0 && directTel.length <= 0) {
+      this.dropDownAlertRef.alertWithType(
+        'error',
+        'Error',
+        'Please enter family name and direct tel',
+      );
+    } else {
+      const response = await updateProfile(
+        1,
+        family_name,
+        title,
+        directTel,
+        website,
+        brokerageName,
+        officeTel,
+      );
+      if (response.status === 200) {
+        this.props.navigation.navigate('Home');
+      }
+    }
   };
 
   render() {
@@ -108,15 +118,15 @@ class CreateAccoutScreen extends Component {
                 onChangeText={this.onChangeState}
               />
               <InputDefault
-                name="title"
-                value={title}
-                label="Title"
-                onChangeText={this.onChangeState}
-              />
-              <InputDefault
                 name="directTel"
                 value={directTel}
                 label="Direct Tel"
+                onChangeText={this.onChangeState}
+              />
+              <InputDefault
+                name="title"
+                value={title}
+                label="Title"
                 onChangeText={this.onChangeState}
               />
               <InputDefault
@@ -144,6 +154,7 @@ class CreateAccoutScreen extends Component {
             </View>
           </View>
         </SafeAreaView>
+        <DropdownAlert ref={ref => (this.dropDownAlertRef = ref)} />
       </ScrollView>
     );
   }

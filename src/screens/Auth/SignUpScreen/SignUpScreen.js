@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {CheckBox} from 'react-native-elements';
 import {connect} from 'react-redux';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import HeaderDefault from '../../../components/HeaderDefault';
 import GradientText from '../../../components/GradientText';
@@ -43,18 +44,32 @@ class SignUpScreen extends Component {
   };
 
   componentDidUpdate() {
-    if (this.props.users.authStatus) {
-      this.props.navigation.navigate('CreateAccount');
+    if (this.props.user.authStatus) {
+      this.props.navigation.navigate('Home');
     }
   }
 
   handlePressSignUp = async () => {
     const {fullName, email, password, agree} = this.state;
+
     if (agree) {
       const response = await registration(fullName, email, password);
 
-      this.props.setAuth('email', response.key);
-      this.props.setUser(response.user);
+      if (response.status === 201) {
+        const responseBody = await response.json();
+
+        this.props.setAuth('email', responseBody.key);
+        this.props.setUser(responseBody.user);
+      } else {
+        const responseBody = await response.text();
+        this.dropDownAlertRef.alertWithType('error', 'Error', responseBody);
+      }
+    } else {
+      this.dropDownAlertRef.alertWithType(
+        'error',
+        'Error',
+        'First agree terms of use',
+      );
     }
   };
   render() {
@@ -91,6 +106,7 @@ class SignUpScreen extends Component {
                   name="email"
                   value={email}
                   label="Email"
+                  keyboardType={'email-address'}
                   onChangeText={this.onChangeState}
                 />
                 <InputDefault
@@ -130,6 +146,7 @@ class SignUpScreen extends Component {
             </View>
           </KeyboardAvoidingView>
         </SafeAreaView>
+        <DropdownAlert ref={ref => (this.dropDownAlertRef = ref)} />
       </ScrollView>
     );
   }

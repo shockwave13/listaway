@@ -32,6 +32,7 @@ class InputDefault extends Component {
         label={this.props.label}
         labelStyle={[styles.label, {color: activeColor}]}
         inputContainerStyle={{borderColor: activeColor, height: 40}}
+        keyboardType={this.props.keyboardType}
         containerStyle={styles.container}
         onFocus={() => this.onChangeColor(colors.LIGHT_BLUE)}
         onBlur={() => this.onChangeColor('silver')}

@@ -78,9 +78,8 @@ export async function registration(
         password2: passwordIncome,
       }),
     });
-    let responseJson = await response.json();
-    console.log(responseJson);
-    return responseJson;
+
+    return response;
   } catch (error) {
     console.error(error);
   }
@@ -114,9 +113,8 @@ export async function updateProfile(
         }),
       },
     );
-    let responseJson = await response.json();
-    console.log(responseJson);
-    return responseJson;
+
+    return response;
   } catch (error) {
     console.error(error);
   }
