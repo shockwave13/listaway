@@ -1,13 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  SafeAreaView,
-  Text,
-  KeyboardAvoidingView,
-  Platform,
-  StatusBar,
-  ScrollView,
-} from 'react-native';
+import {View, SafeAreaView, StatusBar, ScrollView} from 'react-native';
 import {Icon} from 'react-native-elements';
 
 import HeaderDefault from '../../../components/HeaderDefault';
@@ -16,6 +8,8 @@ import InputDefault from '../../../components/InputDefault';
 import {LinearButton} from '../../../components/Buttons';
 
 import {globalStyles, fonts, colors} from '../../../constants';
+import {connect} from 'react-redux';
+import {updateProfile} from '../../../services/api';
 
 import styles from './styles';
 
@@ -23,11 +17,12 @@ class CreateAccoutScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      family_name: '',
       title: '',
       directTel: '',
       website: '',
       brokerageName: '',
-      officeTel: false,
+      officeTel: '',
     };
   }
 
@@ -37,8 +32,38 @@ class CreateAccoutScreen extends Component {
     });
   };
 
+  handlePressSave = async () => {
+    const {
+      family_name,
+      title,
+      directTel,
+      website,
+      brokerageName,
+      officeTel,
+    } = this.state;
+
+    const response = await updateProfile(
+      this.props.userId,
+      family_name,
+      title,
+      directTel,
+      website,
+      brokerageName,
+      officeTel,
+    );
+
+    this.props.navigation.navigate('Home');
+  };
+
   render() {
-    const {title, directTel, website, brokerageName, officeTel} = this.state;
+    const {
+      title,
+      directTel,
+      website,
+      brokerageName,
+      officeTel,
+      family_name,
+    } = this.state;
     return (
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
@@ -77,6 +102,12 @@ class CreateAccoutScreen extends Component {
 
             <View style={globalStyles.block}>
               <InputDefault
+                name="family_name"
+                value={family_name}
+                label="Family Name"
+                onChangeText={this.onChangeState}
+              />
+              <InputDefault
                 name="title"
                 value={title}
                 label="Title"
@@ -109,7 +140,7 @@ class CreateAccoutScreen extends Component {
             </View>
 
             <View style={globalStyles.block}>
-              <LinearButton title="SAVE" />
+              <LinearButton title="SAVE" onPress={this.handlePressSave} />
             </View>
           </View>
         </SafeAreaView>
@@ -118,4 +149,10 @@ class CreateAccoutScreen extends Component {
   }
 }
 
-export default CreateAccoutScreen;
+const mapStateToProps = state => {
+  return {
+    userId: state.users.userId,
+  };
+};
+
+export default connect(mapStateToProps, null)(CreateAccoutScreen);

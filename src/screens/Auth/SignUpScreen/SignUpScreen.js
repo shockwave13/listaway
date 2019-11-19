@@ -22,7 +22,7 @@ import styles from './styles';
 
 import {registration} from '../../../services/api';
 
-import {setAuthKey} from '../../../actions/usersActions';
+import {setAuthKey, setUserId} from '../../../actions/usersActions';
 
 class SignUpScreen extends Component {
   constructor(props) {
@@ -48,12 +48,14 @@ class SignUpScreen extends Component {
     }
   }
 
-  handlePressSignIn = async () => {
-    const {fullName, email, password} = this.state;
-    const key = await registration(fullName, email, password).then(
-      res => res.key,
-    );
-    this.props.setAuth('email', key);
+  handlePressSignUp = async () => {
+    const {fullName, email, password, agree} = this.state;
+    if (agree) {
+      const response = await registration(fullName, email, password);
+
+      this.props.setAuth('email', response.key);
+      this.props.setUser(response.user);
+    }
   };
   render() {
     const {fullName, email, password, confirmPassword} = this.state;
@@ -122,7 +124,7 @@ class SignUpScreen extends Component {
               <View style={globalStyles.block}>
                 <LinearButton
                   title="SIGN UP"
-                  onPress={this.handlePressSignIn}
+                  onPress={this.handlePressSignUp}
                 />
               </View>
             </View>
@@ -143,6 +145,9 @@ const mapDispatchToProps = dispatch => {
   return {
     setAuth: (type, key) => {
       dispatch(setAuthKey(type, key));
+    },
+    setUser: id => {
+      dispatch(setUserId(id));
     },
   };
 };

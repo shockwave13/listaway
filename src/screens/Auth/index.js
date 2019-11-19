@@ -10,6 +10,8 @@ import {
 import {Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 
+import {connect} from 'react-redux';
+
 import {colors, fonts, images} from '../../constants';
 
 class Auth extends Component {
@@ -17,6 +19,11 @@ class Auth extends Component {
     super(props);
     this.state = {};
   }
+
+  componentDidMount() {
+    console.log(this.props.authStatus);
+  }
+
   render() {
     return (
       <LinearGradient
@@ -103,4 +110,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Auth;
+const mapStateToProps = state => {
+  return {
+    authStatus: state.users.authStatus,
+  };
+};
+
+export default connect(mapStateToProps, null)(Auth);

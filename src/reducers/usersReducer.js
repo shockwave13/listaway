@@ -2,9 +2,11 @@ import {
   SET_KEY_EMAIL_AUTH,
   SET_KEY_FACEBOOK_AUTH,
   SET_KEY_GOOGLE_AUTH,
+  SET_USER_ID,
 } from '../actions/usersActions';
 
 const initState = {
+  userId: '',
   keyEmail: '',
   keyFacebook: '',
   keyGoogle: '',
@@ -32,6 +34,12 @@ const usersReducer = (state = initState, action) => {
         ...state,
         keyGoogle: action.key,
         authStatus: true,
+      };
+    }
+    case SET_USER_ID: {
+      return {
+        ...state,
+        userId: action.id,
       };
     }
     default:

@@ -13,24 +13,25 @@ import InputDefault from '../../../components/InputDefault';
 import {LinearButton} from '../../../components/Buttons';
 import GradientText from '../../../components/GradientText';
 
-import {LoginButton, AccessToken} from 'react-native-fbsdk';
+import {AccessToken, LoginManager} from 'react-native-fbsdk';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-community/google-signin';
 
-import {globalStyles} from '../../../constants';
+import {globalStyles, colors, fonts} from '../../../constants';
 import styles from './styles';
 
 import {connect} from 'react-redux';
 import {setAuthKey} from '../../../actions/usersActions';
 
 import {
-  LoginWithEmailAndPassword,
-  LoginWithFacebook,
-  LoginWithGoogle,
+  loginWithEmailAndPassword,
+  loginWithFacebook,
+  loginWithGoogle,
 } from '../../../services/api';
+import {Button} from 'react-native-elements';
 
 class SignInScreen extends Component {
   constructor(props) {
@@ -65,6 +66,39 @@ class SignInScreen extends Component {
     });
   };
 
+  handlePressLogin = async () => {
+    const {email, password} = this.state;
+    const response = await loginWithEmailAndPassword(email, password);
+
+    console.log(response);
+    if (
+      response.password === undefined &&
+      response.non_field_errors === undefined
+    ) {
+      this.props.setAuth('email', response.key);
+    }
+  };
+
+  handlePressLoginFacebook = () => {
+    LoginManager.logInWithPermissions(['public_profile']).then(
+      async result => {
+        if (result.isCancelled) {
+          console.log('Login cancelled');
+        } else {
+          const response = await AccessToken.getCurrentAccessToken().then(
+            res => res.accessToken,
+          );
+          const key = await loginWithFacebook(response);
+
+          this.props.setAuth('facebook', key);
+        }
+      },
+      function(error) {
+        console.log('Login fail with error: ' + error);
+      },
+    );
+  };
+
   handlePressLoginGoogle = async () => {
     //Prompts a modal to let the user sign in into your application.
     try {
@@ -90,35 +124,6 @@ class SignInScreen extends Component {
         console.log('Some Other Error Happened');
       }
     }
-  };
-
-  _signOut = async () => {
-    //Remove user session from the device.
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  handlePressLogin = async () => {
-    const {email, password} = this.state;
-    const response = await loginWithEmailAndPassword(email, password);
-
-    console.log(response);
-    if (
-      response.password === undefined &&
-      response.non_field_errors === undefined
-    ) {
-      this.props.setAuth('email', response.key);
-    }
-  };
-
-  handlePressLoginFacebook = async tokenFB => {
-    const key = await loginWithFacebook(tokenFB).then(response => response.key);
-
-    this.props.setAuth('facebook', key);
   };
 
   render() {
@@ -168,27 +173,20 @@ class SignInScreen extends Component {
             <View style={{marginTop: 5}}>
               <LinearButton title="LOGIN" onPress={this.handlePressLogin} />
 
-              <View
-                style={{
-                  marginTop: 20,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <LoginButton
-                  onLoginFinished={(error, result) => {
-                    if (error) {
-                      console.log('login has error: ' + result.error);
-                    } else if (result.isCancelled) {
-                      console.log('login is cancelled.');
-                    } else {
-                      AccessToken.getCurrentAccessToken().then(data => {
-                        this.handlePressLoginFacebook(data.accessToken);
-                      });
-                    }
+              <View style={styles.rowBlock}>
+                <Button
+                  icon={{
+                    name: 'logo-facebook',
+                    type: 'ionicon',
+                    color: 'white',
+                    underlayColor: colors.FACEBOOK,
                   }}
-                  onLogoutFinished={() => console.log('logout.')}
+                  title="Login with facebook"
+                  buttonStyle={{
+                    backgroundColor: colors.FACEBOOK,
+                  }}
+                  onPress={() => this.handlePressLoginFacebook()}
                 />
-
                 <GoogleSigninButton
                   style={{flex: 1}}
                   color={GoogleSigninButton.Color.Light}

@@ -79,6 +79,43 @@ export async function registration(
       }),
     });
     let responseJson = await response.json();
+    console.log(responseJson);
+    return responseJson;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function updateProfile(
+  id,
+  familyName,
+  title,
+  directTel,
+  web,
+  brokName,
+  officeTel,
+) {
+  try {
+    let response = await fetch(
+      `${DEFAULT_SERVER}api/v1/profiles/${id}/update/`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          family_name: familyName,
+          title: title,
+          direct_tel: directTel,
+          website: web,
+          brokerage_name: brokName,
+          office_tel: officeTel,
+        }),
+      },
+    );
+    let responseJson = await response.json();
+    console.log(responseJson);
     return responseJson;
   } catch (error) {
     console.error(error);

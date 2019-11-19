@@ -1,6 +1,7 @@
 export const SET_KEY_EMAIL_AUTH = 'SET_KEY_EMAIL_AUTH';
 export const SET_KEY_GOOGLE_AUTH = 'SET_KEY_GOOGLE_AUTH';
 export const SET_KEY_FACEBOOK_AUTH = 'SET_KEY_FACEBOOK_AUTH';
+export const SET_USER_ID = 'SET_USER_ID';
 
 const setKeyEmailAuth = key => ({
   type: SET_KEY_EMAIL_AUTH,
@@ -35,3 +36,8 @@ export const setAuthKey = (type, key) => dispatch => {
       return null;
   }
 };
+
+export const setUserId = id => ({
+  type: SET_USER_ID,
+  id,
+});

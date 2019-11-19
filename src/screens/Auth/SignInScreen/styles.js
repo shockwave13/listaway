@@ -46,4 +46,9 @@ export default StyleSheet.create({
     height: 50,
     borderRadius: 5,
   },
+  rowBlock: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, BackHandler} from 'react-native';
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -9,6 +9,15 @@ class HomeScreen extends Component {
 
   componentDidMount() {
     this.props.navigation.openDrawer();
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton() {
+    return true;
   }
 
   render() {
