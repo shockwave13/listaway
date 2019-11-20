@@ -63,6 +63,7 @@ export async function registration(
   usernameIncome,
   emailIncome,
   passwordIncome,
+confirmPassword,
 ) {
   try {
     let response = await fetch(`${DEFAULT_SERVER}rest-auth/registration/`, {
@@ -72,10 +73,10 @@ export async function registration(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username: usernameIncome,
+        username: usernameIncome.replace(' ','_'),
         email: emailIncome,
         password1: passwordIncome,
-        password2: passwordIncome,
+        password2: confirmPassword,
       }),
     });
 

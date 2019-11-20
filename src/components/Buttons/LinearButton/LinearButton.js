@@ -8,21 +8,33 @@ import {colors, fonts} from '../../../constants';
 class LinearButton extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      fColor: colors.LIGHT_GREEN,
+      sColor: colors.LIGHT_BLUE,
+      opacity: 1,
+    };
   }
   render() {
     return (
       <Button
         ViewComponent={LinearGradient}
         linearGradientProps={{
-          colors: [colors.LIGHT_GREEN, colors.LIGHT_BLUE],
+          colors: [this.state.fColor, this.state.sColor],
           start: {x: 0, y: 1},
           end: {x: 1, y: 0},
         }}
         title={this.props.title}
         titleStyle={styles.btnTitle}
-        buttonStyle={styles.btnStyle}
+        buttonStyle={[styles.btnStyle, {opacity: this.state.opacity}]}
         onPress={this.props.onPress}
+        onPressIn={() => {
+          this.setState({opacity: 0.2});
+        }}
+        onPressOut={() => {
+          this.setState({
+            opacity: 1,
+          });
+        }}
       />
     );
   }

@@ -6,6 +6,7 @@ import {
   StatusBar,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 
@@ -33,6 +34,7 @@ import {
   loginWithGoogle,
 } from '../../../services/api';
 import {Button} from 'react-native-elements';
+import {thisExpression} from '@babel/types';
 
 class SignInScreen extends Component {
   constructor(props) {
@@ -41,6 +43,7 @@ class SignInScreen extends Component {
       email: '',
       password: '',
       key: '',
+      isLoading: false,
     };
   }
 
@@ -69,9 +72,13 @@ class SignInScreen extends Component {
 
   handlePressLogin = async () => {
     const {email, password} = this.state;
+    this.setState({
+      isLoading: true,
+    });
     const response = await loginWithEmailAndPassword(email, password);
-
-    console.log(response);
+    this.setState({
+      isLoading: false,
+    });
     if (
       response.password === undefined &&
       response.non_field_errors === undefined
@@ -134,6 +141,18 @@ class SignInScreen extends Component {
   };
 
   render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <StatusBar
+            barStyle="dark-content"
+            backgroundColor="white"
+            translucent={false}
+          />
+          <ActivityIndicator size="large" color={colors.LIGHT_GREEN} />
+        </View>
+      );
+    }
     return (
       <SafeAreaView style={styles.containerFull}>
         <StatusBar

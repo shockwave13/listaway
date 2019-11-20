@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import {
   View,
   SafeAreaView,
-  Text,
   KeyboardAvoidingView,
   Platform,
   StatusBar,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import {CheckBox} from 'react-native-elements';
 import {connect} from 'react-redux';
@@ -34,6 +34,7 @@ class SignUpScreen extends Component {
       password: '',
       confirmPassword: '',
       agree: false,
+      isLoading: false,
     };
   }
 
@@ -44,17 +45,27 @@ class SignUpScreen extends Component {
   };
 
   componentDidUpdate() {
-    if (this.props.user.authStatus) {
-      this.props.navigation.navigate('Home');
+    if (this.props.users.authStatus) {
+      this.props.navigation.navigate('CreateAccount');
     }
   }
 
   handlePressSignUp = async () => {
-    const {fullName, email, password, agree} = this.state;
+    const {fullName, email, password, confirmPassword, agree} = this.state;
 
     if (agree) {
-      const response = await registration(fullName, email, password);
-
+      this.setState({
+        isLoading: true,
+      });
+      const response = await registration(
+        fullName,
+        email,
+        password,
+        confirmPassword,
+      );
+      this.setState({
+        isLoading: false,
+      });
       if (response.status === 201) {
         const responseBody = await response.json();
 
@@ -74,6 +85,18 @@ class SignUpScreen extends Component {
   };
   render() {
     const {fullName, email, password, confirmPassword} = this.state;
+    if (this.state.isLoading) {
+      return (
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <StatusBar
+            barStyle="dark-content"
+            backgroundColor="white"
+            translucent={false}
+          />
+          <ActivityIndicator size="large" color={colors.LIGHT_GREEN} />
+        </View>
+      );
+    }
     return (
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"

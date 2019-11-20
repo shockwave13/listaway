@@ -114,7 +114,7 @@ class CreateAccoutScreen extends Component {
               <InputDefault
                 name="family_name"
                 value={family_name}
-                label="Family Name"
+                label="Surname"
                 onChangeText={this.onChangeState}
               />
               <InputDefault
@@ -138,7 +138,7 @@ class CreateAccoutScreen extends Component {
               <InputDefault
                 name="brokerageName"
                 value={brokerageName}
-                label="Brokerage Name"
+                label="Job Title"
                 onChangeText={this.onChangeState}
               />
               <InputDefault

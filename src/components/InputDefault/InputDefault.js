@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Input} from 'react-native-elements';
+import {Input, ThemeConsumer} from 'react-native-elements';
 
 import {fonts, colors} from '../../constants';
 
@@ -14,9 +14,19 @@ class InputDefault extends Component {
   }
 
   onChangeColor = newColor => {
-    this.setState({
-      activeColor: newColor,
-    });
+    if (this.props.value.length === 0) {
+      this.setState({
+        activeColor: 'red',
+      });
+    } else if (this.props.value.length > 0) {
+      this.setState({
+        activeColor: colors.LIGHT_GREEN,
+      });
+    } else {
+      this.setState({
+        activeColor: newColor,
+      });
+    }
   };
 
   render() {
@@ -25,10 +35,14 @@ class InputDefault extends Component {
       <Input
         autoCapitalize={'none'}
         rightIcon={{
-          name: 'check-circle',
-          type: 'materila-community',
+          name:
+            activeColor === colors.LIGHT_GREEN
+              ? 'ios-checkmark-circle'
+              : 'ios-close-circle',
+          type: 'ionicon',
           color: activeColor,
         }}
+        value={this.props.value}
         label={this.props.label}
         labelStyle={[styles.label, {color: activeColor}]}
         inputContainerStyle={{borderColor: activeColor, height: 40}}
