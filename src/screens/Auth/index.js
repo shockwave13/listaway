@@ -12,7 +12,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import {connect} from 'react-redux';
 
-import {colors, fonts, images} from '../../constants';
+import {colors, fonts, images, icons} from '../../constants';
 
 class Auth extends Component {
   constructor(props) {
@@ -37,8 +37,8 @@ class Auth extends Component {
         <SafeAreaView style={styles.container}>
           <View style={styles.containerLogo}>
             <Image
-              source={images.logo}
-              style={{height: 200, width: 200}}
+              source={icons.logo}
+              style={{height: 200, width: '80%'}}
               resizeMode="contain"
             />
           </View>
