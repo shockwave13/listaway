@@ -14,7 +14,7 @@ import {updateProfile} from '../../../services/api';
 
 import styles from './styles';
 
-class CreateAccoutScreen extends Component {
+class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -166,4 +166,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, null)(CreateAccoutScreen);
+export default connect(mapStateToProps, null)(ProfileScreen);
