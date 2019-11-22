@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {View, SafeAreaView, StatusBar, ScrollView} from 'react-native';
+import {View, SafeAreaView, StatusBar, ScrollView, Image} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
 import DropdownAlert from 'react-native-dropdownalert';
+import ImagePicker from 'react-native-image-picker';
 
 import HeaderDefault from '../../../components/HeaderDefault';
 import GradientText from '../../../components/GradientText';
@@ -24,6 +25,7 @@ class CreateAccoutScreen extends Component {
       website: '',
       brokerageName: '',
       officeTel: '',
+      avatarSource: null,
     };
   }
 
@@ -65,6 +67,43 @@ class CreateAccoutScreen extends Component {
     }
   };
 
+  handlePressChangeImage = () => {
+    // More info on all the options is below in the API Reference... just some common use cases shown here
+    const options = {
+      title: 'Select Avatar',
+
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    /**
+     * The first arg is the options object for customization (it can also be null or omitted for default options),
+     * The second arg is the callback which sends object: response (more info in the API Reference)
+     */
+    ImagePicker.showImagePicker(options, response => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = {uri: response.uri};
+
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        this.setState({
+          avatarSource: source,
+        });
+      }
+    });
+  };
+
   render() {
     const {
       title,
@@ -96,11 +135,37 @@ class CreateAccoutScreen extends Component {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
+                {this.state.avatarSource !== null ? (
+                  <Image
+                    source={this.state.avatarSource}
+                    style={{flex: 1, width: null, height: null}}
+                    resizeMode="contain"
+                  />
+                ) : (
+                  <Icon
+                    name="ios-person"
+                    type="ionicon"
+                    color="white"
+                    size={48}
+                  />
+                )}
                 <Icon
-                  name="ios-person"
-                  type="ionicon"
+                  name="pencil"
+                  type="material-community"
                   color="white"
-                  size={48}
+                  size={20}
+                  containerStyle={{
+                    position: 'absolute',
+                    bottom: 0,
+                    right: 0,
+                    backgroundColor: colors.LIGHT_GREEN,
+                    width: 30,
+                    height: 30,
+                    borderRadius: 15,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  onPress={this.handlePressChangeImage}
                 />
               </View>
             </View>
