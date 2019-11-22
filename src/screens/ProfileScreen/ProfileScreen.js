@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  SafeAreaView,
-  StatusBar,
-  ScrollView,
-  Modal,
-  Image,
-} from 'react-native';
+import {View, SafeAreaView, StatusBar, ScrollView, Image} from 'react-native';
 import {Icon, Button} from 'react-native-elements';
 import {connect} from 'react-redux';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -78,21 +71,13 @@ class ProfileScreen extends Component {
   };
 
   handlePressChangeImage = () => {
-    // More info on all the options is below in the API Reference... just some common use cases shown here
-    const options = {
-      title: 'Select Avatar',
-
+    let options = {
       storageOptions: {
         skipBackup: true,
         path: 'images',
       },
     };
-
-    /**
-     * The first arg is the options object for customization (it can also be null or omitted for default options),
-     * The second arg is the callback which sends object: response (more info in the API Reference)
-     */
-    ImagePicker.showImagePicker(options, response => {
+    ImagePicker.launchImageLibrary(options, response => {
       console.log('Response = ', response);
 
       if (response.didCancel) {
@@ -101,14 +86,14 @@ class ProfileScreen extends Component {
         console.log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
       } else {
         const source = {uri: response.uri};
-
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
+        console.log('response', JSON.stringify(response));
         this.setState({
-          avatarSource: source,
+          filePath: response,
+          fileData: response.data,
+          fileUri: response.uri,
         });
       }
     });
@@ -161,9 +146,19 @@ class ProfileScreen extends Component {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                {this.state.avatarSource !== null ? (
+                {this.state.fileData !== null ? (
+                  /**
                   <Image
-                    source={this.state.avatarSource}
+                    source={{
+                      uri: 'data:image/jpeg;base64,' + this.state.fileData,
+                    }}
+                    style={{flex: 1, width: null, height: null}}
+                    resizeMode="contain"
+                  />
+                   */
+
+                  <Image
+                    source={{uri: this.state.fileUri}}
                     style={{flex: 1, width: null, height: null}}
                     resizeMode="contain"
                   />

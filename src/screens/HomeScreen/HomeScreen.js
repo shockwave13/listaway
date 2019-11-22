@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, BackHandler} from 'react-native';
+import {View, Text, BackHandler, SafeAreaView} from 'react-native';
 import {Icon} from 'react-native-elements';
 
 class HomeScreen extends Component {
@@ -22,7 +22,7 @@ class HomeScreen extends Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
         <View style={{alignItems: 'flex-start', marginLeft: 15}}>
           <Icon
             name="menu"
@@ -35,7 +35,7 @@ class HomeScreen extends Component {
           />
         </View>
         <Text>Home</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 }
