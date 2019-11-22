@@ -3,6 +3,7 @@ const colors = {
   LIGHT_BLUE: '#rgb(85,180,180)',
   FACEBOOK: '#rgb(62,86,149)',
   UNDER: '#rgb(190,190,190)',
+  RED: 'red',
 };
 
 export default colors;

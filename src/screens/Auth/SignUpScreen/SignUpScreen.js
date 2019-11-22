@@ -122,7 +122,7 @@ class SignUpScreen extends Component {
                 <InputDefault
                   name="fullName"
                   value={fullName}
-                  label="Surname"
+                  label="Username"
                   onChangeText={this.onChangeState}
                 />
                 <InputDefault

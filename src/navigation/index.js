@@ -11,6 +11,8 @@ import ChangePasswordScreen from '../screens/Auth/ChangePasswordScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
 import CreateAccountScreen from '../screens/Auth/CreateAccountScreen';
 
+import ProfileScreen from '../screens/ProfileScreen';
+
 const AppDrawerNavigation = createDrawerNavigator({
   TourList: {
     screen: HomeScreen,
@@ -31,7 +33,7 @@ const AppDrawerNavigation = createDrawerNavigator({
     },
   },
   Profile: {
-    screen: HomeScreen,
+    screen: ProfileScreen,
     navigationOptions: {
       title: 'Profile',
     },
@@ -85,7 +87,7 @@ const AppNavigation = createStackNavigator(
     },
   },
   {
-    initialRouteName: 'Auth',
+    initialRouteName: 'Home',
     defaultNavigationOptions: {
       header: null,
     },

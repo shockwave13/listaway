@@ -33,6 +33,7 @@ class InputDefault extends Component {
     const {activeColor} = this.state;
     return (
       <Input
+        editable={this.props.editable}
         autoCapitalize={'none'}
         rightIcon={{
           name:

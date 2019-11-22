@@ -15,17 +15,18 @@ class LinearButton extends Component {
     };
   }
   render() {
+    const {fColor, sColor, opacity} = this.state;
     return (
       <Button
         ViewComponent={LinearGradient}
         linearGradientProps={{
-          colors: [this.state.fColor, this.state.sColor],
+          colors: [fColor, sColor],
           start: {x: 0, y: 1},
           end: {x: 1, y: 0},
         }}
         title={this.props.title}
         titleStyle={styles.btnTitle}
-        buttonStyle={[styles.btnStyle, {opacity: this.state.opacity}]}
+        buttonStyle={[styles.btnStyle, {opacity: opacity}]}
         onPress={this.props.onPress}
         onPressIn={() => {
           this.setState({opacity: 0.2});
