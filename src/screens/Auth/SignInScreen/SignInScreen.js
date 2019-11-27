@@ -7,8 +7,10 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
+import {Button} from 'react-native-elements';
 
 import HeaderDefault from '../../../components/HeaderDefault';
 import InputDefault from '../../../components/InputDefault';
@@ -26,15 +28,12 @@ import {globalStyles, colors, fonts} from '../../../constants';
 import styles from './styles';
 
 import {connect} from 'react-redux';
-import {setAuthKey} from '../../../actions/usersActions';
-
 import {
-  loginWithEmailAndPassword,
+  loginWithEmail,
   loginWithFacebook,
   loginWithGoogle,
-} from '../../../services/api';
-import {Button} from 'react-native-elements';
-import {thisExpression} from '@babel/types';
+  clearError,
+} from '../../../actions/usersActions';
 
 class SignInScreen extends Component {
   constructor(props) {
@@ -42,15 +41,16 @@ class SignInScreen extends Component {
     this.state = {
       email: '',
       password: '',
-      key: '',
-      isLoading: false,
     };
   }
 
   componentDidMount() {
-    if (this.props.users.authStatus) {
+    const {token} = this.props;
+
+    if (token !== null) {
       this.props.navigation.navigate('Home');
     }
+
     GoogleSignin.configure({
       scopes: ['https://www.googleapis.com/auth/drive.readonly'],
       webClientId:
@@ -59,7 +59,22 @@ class SignInScreen extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.users.authStatus) {
+    const {error, token, clearErrorUser} = this.props;
+
+    let errorStr = '';
+
+    if (error !== null) {
+      if (error.password !== undefined) {
+        errorStr += 'Password: ' + error.password[0] + '\n';
+      }
+      if (error.email !== undefined) {
+        errorStr += error.email[0];
+      }
+      Alert.alert('Error', errorStr);
+      clearErrorUser();
+    }
+
+    if (token !== null) {
       this.props.navigation.navigate('Home');
     }
   }
@@ -70,41 +85,26 @@ class SignInScreen extends Component {
     });
   };
 
+  //onPress login
   handlePressLogin = async () => {
     const {email, password} = this.state;
-    this.setState({
-      isLoading: true,
-    });
-    const response = await loginWithEmailAndPassword(email, password);
-    this.setState({
-      isLoading: false,
-    });
-    if (
-      response.password === undefined &&
-      response.non_field_errors === undefined
-    ) {
-      this.props.setAuth('email', response.key);
-    } else {
-      this.dropDownAlertRef.alertWithType(
-        'error',
-        'Error',
-        'Wrong password or email',
-      );
-    }
-  };
+    const {emailLogin} = this.props;
 
+    emailLogin(email, password);
+  };
+  //onPress facebook
   handlePressLoginFacebook = () => {
-    LoginManager.logInWithPermissions(['public_profile']).then(
+    const {facebookLogin} = this.props;
+
+    LoginManager.logInWithPermissions(['public_profile', 'email']).then(
       async result => {
         if (result.isCancelled) {
           console.log('Login cancelled');
         } else {
-          const response = await AccessToken.getCurrentAccessToken().then(
+          const token = await AccessToken.getCurrentAccessToken().then(
             res => res.accessToken,
           );
-          const key = await loginWithFacebook(response);
-
-          this.props.setAuth('facebook', key);
+          facebookLogin(token);
         }
       },
       function(error) {
@@ -112,9 +112,10 @@ class SignInScreen extends Component {
       },
     );
   };
-
+  //onPress google
   handlePressLoginGoogle = async () => {
-    //Prompts a modal to let the user sign in into your application.
+    const {googleLogin} = this.props;
+
     try {
       await GoogleSignin.hasPlayServices({
         //Check if device has Google Play Services installed.
@@ -123,9 +124,7 @@ class SignInScreen extends Component {
       });
       await GoogleSignin.signIn();
       const response = await GoogleSignin.getTokens();
-      const key = await loginWithGoogle(response.accessToken);
-
-      this.props.setAuth('google', key.key);
+      googleLogin(response.accessToken);
     } catch (error) {
       console.log('Message', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -141,7 +140,9 @@ class SignInScreen extends Component {
   };
 
   render() {
-    if (this.state.isLoading) {
+    const {loading} = this.props;
+
+    if (loading) {
       return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <StatusBar
@@ -230,14 +231,25 @@ class SignInScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    users: state.users,
+    loading: state.users.loading,
+    error: state.users.error,
+    token: state.users.token,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setAuth: (type, key) => {
-      dispatch(setAuthKey(type, key));
+    emailLogin: (e, p) => {
+      dispatch(loginWithEmail(e, p));
+    },
+    facebookLogin: token => {
+      dispatch(loginWithFacebook(token));
+    },
+    googleLogin: token => {
+      dispatch(loginWithGoogle(token));
+    },
+    clearErrorUser: () => {
+      dispatch(clearError());
     },
   };
 };

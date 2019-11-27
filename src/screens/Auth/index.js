@@ -20,10 +20,6 @@ class Auth extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
-    console.log(this.props.authStatus);
-  }
-
   render() {
     return (
       <LinearGradient
@@ -111,9 +107,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {
-    authStatus: state.users.authStatus,
-  };
+  return {};
 };
 
 export default connect(mapStateToProps, null)(Auth);
