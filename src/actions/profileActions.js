@@ -70,8 +70,6 @@ export const updateProfile = (
   fetch(`${DEFAULT_URL}/api/v1/profile/`, {
     method: 'PUT',
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
       Authorization: `Token ${token}`,
     },
     body: profile,
@@ -79,24 +77,25 @@ export const updateProfile = (
     .then(response => response.json())
     .then(responseJson => {
       dispatch(setProfile(responseJson));
-      dispatch(setLoading(false));
+
       if (create !== false) {
         dispatch(setSuccess(true));
       }
     })
     .catch(error => {
       dispatch(setError(error));
-      dispatch(setLoading(false));
     });
+
+  dispatch(setLoading(false));
 };
 
 export const updateAvatar = (avatar, token) => dispatch => {
   dispatch(setLoading(true));
+
   const profile = new FormData();
-  console.log(avatar);
   profile.append('avatar', {
     uri: avatar.uri,
-    type: avatar.type,
+    type: avatar.type === null ? 'image/jpeg' : avatar.type,
     name: avatar.fileName,
     data: avatar.data,
   });
@@ -104,8 +103,6 @@ export const updateAvatar = (avatar, token) => dispatch => {
   fetch(`${DEFAULT_URL}/api/v1/profile/`, {
     method: 'PUT',
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
       Authorization: `Token ${token}`,
     },
     body: profile,
@@ -113,10 +110,8 @@ export const updateAvatar = (avatar, token) => dispatch => {
     .then(response => response.json())
     .then(responseJson => {
       dispatch(setProfile(responseJson));
-      dispatch(setLoading(false));
     })
-    .catch(error => {
-      dispatch(setError(error));
-      dispatch(setLoading(false));
-    });
+    .catch(error => dispatch(setError(error)));
+
+  dispatch(setLoading(false));
 };
