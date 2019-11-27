@@ -1,72 +1,109 @@
-const DEFAULT_PROFILE_URL =
-  'https://pacific-atoll-30835.herokuapp.com/api/v1/profiles/';
+import {DEFAULT_URL} from '../config/server';
 
 export const SET_PROFILE = 'SET_PROFILE';
 export const SET_ERROR = 'SET_ERROR';
 export const SET_LOADING = 'SET_LOADING';
-export const ON_CHANGE_VALUE = 'ON_CHANGE_VALUE';
+export const CHANGE_PROFILE_FIELD = 'CHANGE_PROFILE_FIELD';
 
 const setProfile = profile => ({
   type: SET_PROFILE,
-  profile,
+  payload: profile,
 });
 
-const getProfileError = error => ({
+const setError = error => ({
   type: SET_ERROR,
-  error,
+  payload: error,
 });
 
-const setLoading = status => ({
+const setLoading = loading => ({
   type: SET_LOADING,
-  status,
+  payload: loading,
 });
 
 export const onChangeProfileInfo = (name, value) => ({
-  type: ON_CHANGE_VALUE,
+  type: CHANGE_PROFILE_FIELD,
   name,
   value,
 });
 
-export const getProfile = profileId => dispatch => {
+export const getProfile = token => dispatch => {
   dispatch(setLoading(true));
 
-  fetch(`${DEFAULT_PROFILE_URL}${profileId}/`, {
+  fetch(`${DEFAULT_URL}/api/v1/profile/`, {
     method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Token ${token}`,
+    },
   })
     .then(response => response.json())
     .then(responseJson => {
       dispatch(setProfile(responseJson));
       dispatch(setLoading(false));
     })
-    .catch(error => dispatch(getProfileError(error)));
+    .catch(error => {
+      dispatch(setError(error));
+      dispatch(setLoading(false));
+    });
 };
 
-export const updateProfile = newProfile => dispatch => {
+export const updateProfile = (newProfile, token) => dispatch => {
   const profile = new FormData();
-  profile.append('family_name', newProfile.family_name);
+  profile.append('full_name', newProfile.full_name);
   profile.append('direct_tel', newProfile.direct_tel);
   profile.append('title', newProfile.title);
   profile.append('website', newProfile.website);
-  profile.append('brokerage_name', newProfile.brokerage_name);
+  profile.append('job_title', newProfile.job_title);
   profile.append('office_tel', newProfile.office_tel);
 
-  /**
-  profile.append('image', {
-    uri: this.state.avatarSource.uri,
-    type: this.state.avatarSource.type,
-    name: this.state.avatarSource.fileName,
-    data: this.state.avatarSource.data,
-  });
-   **/
-  fetch('https://pacific-atoll-30835.herokuapp.com/api/v1/profiles/1/', {
+  fetch(`${DEFAULT_URL}/api/v1/profile/`, {
     method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Token ${token}`,
+    },
     body: profile,
   })
     .then(response => response.json())
     .then(responseJson => {
       dispatch(setProfile(responseJson));
+      dispatch(setLoading(false));
     })
     .catch(error => {
-      dispatch(setProfileError(error));
+      dispatch(setError(error));
+      dispatch(setLoading(false));
+    });
+};
+
+export const updateAvatar = (avatar, token) => dispatch => {
+  dispatch(setLoading(true));
+  const profile = new FormData();
+  console.log(avatar);
+  profile.append('avatar', {
+    uri: avatar.uri,
+    type: avatar.type,
+    name: avatar.fileName,
+    data: avatar.data,
+  });
+
+  fetch(`${DEFAULT_URL}/api/v1/profile/`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Token ${token}`,
+    },
+    body: profile,
+  })
+    .then(response => response.json())
+    .then(responseJson => {
+      dispatch(setProfile(responseJson));
+      dispatch(setLoading(false));
+    })
+    .catch(error => {
+      dispatch(setError(error));
+      dispatch(setLoading(false));
     });
 };

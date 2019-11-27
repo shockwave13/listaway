@@ -20,6 +20,14 @@ class Auth extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    const {token} = this.props;
+
+    if (token !== null) {
+      this.props.navigation.navigate('Home');
+    }
+  }
+
   render() {
     return (
       <LinearGradient
@@ -107,7 +115,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    token: state.users.token,
+  };
 };
 
 export default connect(mapStateToProps, null)(Auth);

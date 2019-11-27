@@ -6,6 +6,7 @@ import {
   ScrollView,
   Image,
   ActivityIndicator,
+  AsyncStorage,
 } from 'react-native';
 import {Icon, Button} from 'react-native-elements';
 import {connect} from 'react-redux';
@@ -18,12 +19,14 @@ import {LinearButton} from '../../components/Buttons';
 import ModalDelete from './ModalDelete';
 
 import {globalStyles, fonts, colors} from '../../constants';
-//import {updateProfile} from '../../services/api';
+
+import {DEFAULT_URL} from '../../config/server';
 
 import {
   getProfile,
   onChangeProfileInfo,
   updateProfile,
+  updateAvatar,
 } from '../../actions/profileActions';
 
 import styles from './styles';
@@ -47,6 +50,14 @@ class ProfileScreen extends Component {
     };
   }
 
+  async componentDidMount() {
+    const {getProfileDetail} = this.props;
+
+    const token = await AsyncStorage.getItem('token', null);
+
+    getProfileDetail(token);
+  }
+
   onChangeState = (name, text) => {
     this.setState({
       [name]: text,
@@ -59,14 +70,15 @@ class ProfileScreen extends Component {
     });
   };
 
-  handlePressSave = () => {
+  handlePressSave = async () => {
     const {onUpdateProfile} = this.props;
 
     this.setState({
       isEditMode: false,
     });
 
-    onUpdateProfile(this.props.profile);
+    const token = await AsyncStorage.getItem('token', null);
+    onUpdateProfile(this.props.profile, token);
   };
 
   handlePressEditPassword = () => {
@@ -87,7 +99,11 @@ class ProfileScreen extends Component {
     });
   };
 
-  handlePressChangeImage = () => {
+  handlePressChangeImage = async () => {
+    const {onUpdateAvatar} = this.props;
+
+    const token = await AsyncStorage.getItem('token', null);
+
     const options = {
       title: 'Select Avatar',
       storageOptions: {
@@ -97,8 +113,6 @@ class ProfileScreen extends Component {
     };
 
     ImagePicker.showImagePicker(options, response => {
-      console.log('Response = ', response);
-
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -106,24 +120,10 @@ class ProfileScreen extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        const source = {uri: response.uri};
-
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-        this.setState({
-          avatarSource: response,
-        });
-        console.log(response);
+        onUpdateAvatar(response, token);
       }
     });
   };
-
-  componentDidMount() {
-    const {getProfileDetail, userId} = this.props;
-
-    getProfileDetail(1);
-  }
 
   render() {
     const {
@@ -135,9 +135,6 @@ class ProfileScreen extends Component {
     } = this.state;
 
     const {profile, loading, onChangeProfile} = this.props;
-
-    const fullUrlImage =
-      'https://pacific-atoll-30835.herokuapp.com' + profile.image;
 
     if (loading) {
       return (
@@ -173,7 +170,7 @@ class ProfileScreen extends Component {
                   <View style={styles.imageContainer}>
                     <Image
                       source={{
-                        uri: fullUrlImage,
+                        uri: `${DEFAULT_URL}${profile.avatar}`,
                       }}
                       style={{flex: 1, width: null, height: null}}
                       resizeMode="cover"
@@ -205,8 +202,8 @@ class ProfileScreen extends Component {
                 <View style={globalStyles.block}>
                   <InputDefault
                     editable={isEditMode}
-                    name="family_name"
-                    value={profile.family_name}
+                    name="full_name"
+                    value={profile.full_name}
                     label="Full name"
                     onChangeText={onChangeProfile}
                   />
@@ -233,8 +230,8 @@ class ProfileScreen extends Component {
                   />
                   <InputDefault
                     editable={isEditMode}
-                    name="brokerage_name"
-                    value={profile.brokerage_name}
+                    name="job_title"
+                    value={profile.job_title}
                     label="Job Title"
                     onChangeText={onChangeProfile}
                   />
@@ -331,7 +328,7 @@ class ProfileScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    userId: state.users.userId,
+    error: state.profile.error,
     profile: state.profile.profile,
     loading: state.profile.loading,
   };
@@ -339,14 +336,17 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getProfileDetail: id => {
-      dispatch(getProfile(id));
-    },
     onChangeProfile: (name, value) => {
       dispatch(onChangeProfileInfo(name, value));
     },
-    onUpdateProfile: profile => {
-      dispatch(updateProfile(profile));
+    getProfileDetail: token => {
+      dispatch(getProfile(token));
+    },
+    onUpdateProfile: (profile, token) => {
+      dispatch(updateProfile(profile, token));
+    },
+    onUpdateAvatar: (profile, token) => {
+      dispatch(updateAvatar(profile, token));
     },
   };
 };

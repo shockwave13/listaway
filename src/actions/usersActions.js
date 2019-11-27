@@ -1,8 +1,8 @@
+import {DEFAULT_URL} from '../config/server';
+
 export const SET_TOKEN = 'SET_TOKEN';
 export const SET_LOADING = 'SET_STATUS';
 export const SET_ERROR = 'SET_ERROR';
-
-const DEFAULT_URL = 'http://127.0.0.1:8000/';
 
 const setToken = token => ({
   type: SET_TOKEN,
@@ -26,7 +26,7 @@ export const clearError = () => dispatch => {
 export const loginWithEmail = (e, p) => dispatch => {
   dispatch(setLoading(true));
 
-  fetch(`${DEFAULT_URL}api/v1/login/`, {
+  fetch(`${DEFAULT_URL}/api/v1/login/`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -53,7 +53,7 @@ export const loginWithEmail = (e, p) => dispatch => {
 export const loginWithFacebook = token => dispatch => {
   dispatch(setLoading(true));
 
-  fetch(`${DEFAULT_URL}api/v1/facebook/`, {
+  fetch(`${DEFAULT_URL}/api/v1/facebook/`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -79,7 +79,7 @@ export const loginWithFacebook = token => dispatch => {
 export const loginWithGoogle = token => dispatch => {
   dispatch(setLoading(true));
 
-  fetch(`${DEFAULT_URL}api/v1/google/`, {
+  fetch(`${DEFAULT_URL}/api/v1/google/`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

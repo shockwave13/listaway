@@ -2,13 +2,13 @@ import {
   SET_ERROR,
   SET_LOADING,
   SET_PROFILE,
-  ON_CHANGE_VALUE,
+  CHANGE_PROFILE_FIELD,
 } from '../actions/profileActions';
 
 const initState = {
   profile: [],
   error: null,
-  isLoading: true,
+  loading: true,
 };
 
 const profileReducer = (state = initState, action) => {
@@ -16,22 +16,22 @@ const profileReducer = (state = initState, action) => {
     case SET_PROFILE: {
       return {
         ...state,
-        profile: action.profile,
+        profile: action.payload,
       };
     }
     case SET_ERROR: {
       return {
         ...state,
-        error: action.error,
+        error: action.payload,
       };
     }
     case SET_LOADING: {
       return {
         ...state,
-        isLoading: action.status,
+        loading: action.payload,
       };
     }
-    case ON_CHANGE_VALUE: {
+    case CHANGE_PROFILE_FIELD: {
       return {
         ...state,
         profile: {

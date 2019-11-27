@@ -1,3 +1,5 @@
+import {AsyncStorage} from 'react-native';
+
 import {SET_TOKEN, SET_LOADING, SET_ERROR} from '../actions/usersActions';
 
 const initState = {
@@ -9,6 +11,7 @@ const initState = {
 const usersReducer = (state = initState, action) => {
   switch (action.type) {
     case SET_TOKEN: {
+      AsyncStorage.setItem('token', action.payload);
       return {
         ...state,
         token: action.payload,
