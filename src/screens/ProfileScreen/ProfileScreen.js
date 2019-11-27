@@ -27,6 +27,7 @@ import {
   onChangeProfileInfo,
   updateProfile,
   updateAvatar,
+  clearError,
 } from '../../actions/profileActions';
 
 import styles from './styles';
@@ -56,6 +57,15 @@ class ProfileScreen extends Component {
     const token = await AsyncStorage.getItem('token', null);
 
     getProfileDetail(token);
+  }
+
+  componentDidUpdate() {
+    const {error, loading, clearErrorProfile} = this.props;
+
+    if (error !== null && loading === false) {
+      this.dropDownAlertRef.alertWithType('error', 'Error', error);
+      clearErrorProfile();
+    }
   }
 
   onChangeState = (name, text) => {
@@ -347,6 +357,9 @@ const mapDispatchToProps = dispatch => {
     },
     onUpdateAvatar: (profile, token) => {
       dispatch(updateAvatar(profile, token));
+    },
+    clearErrorProfile: () => {
+      dispatch(clearError());
     },
   };
 };

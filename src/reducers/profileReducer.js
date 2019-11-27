@@ -4,6 +4,7 @@ import {
   SET_PROFILE,
   CHANGE_PROFILE_FIELD,
   SET_SUCCESS,
+  CLEAR_ERROR,
 } from '../actions/profileActions';
 
 const initState = {
@@ -46,6 +47,12 @@ const profileReducer = (state = initState, action) => {
       return {
         ...state,
         success: action.payload,
+      };
+    }
+    case CLEAR_ERROR: {
+      return {
+        ...state,
+        error: null,
       };
     }
     default:

@@ -59,25 +59,22 @@ class SignInScreen extends Component {
   }
 
   componentDidUpdate() {
-    const {error, token, clearErrorUser} = this.props;
+    const {error, token, loading} = this.props;
 
-    let errorStr = '';
-
-    if (error !== null) {
-      if (error.password !== undefined) {
-        errorStr += 'Password: ' + error.password[0] + '\n';
-      }
-      if (error.email !== undefined) {
-        errorStr += error.email[0];
-      }
-      Alert.alert('Error', errorStr);
-      clearErrorUser();
+    if (error !== null && loading === false) {
+      this.showError(error);
     }
 
     if (token !== null) {
       this.props.navigation.navigate('Home');
     }
   }
+
+  showError = error => {
+    const {clearErrorUser} = this.props;
+    this.dropDownAlertRef.alertWithType('error', 'Error', error);
+    clearErrorUser();
+  };
 
   onChangeState = (name, text) => {
     this.setState({
@@ -154,6 +151,7 @@ class SignInScreen extends Component {
         </View>
       );
     }
+
     return (
       <SafeAreaView style={styles.containerFull}>
         <StatusBar
@@ -223,7 +221,10 @@ class SignInScreen extends Component {
             </View>
           </View>
         </ScrollView>
-        <DropdownAlert ref={ref => (this.dropDownAlertRef = ref)} />
+        <DropdownAlert
+          ref={ref => (this.dropDownAlertRef = ref)}
+          defaultContainer={{paddingTop: 40}}
+        />
       </SafeAreaView>
     );
   }

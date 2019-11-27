@@ -5,6 +5,7 @@ export const SET_ERROR = 'SET_ERROR';
 export const SET_LOADING = 'SET_LOADING';
 export const CHANGE_PROFILE_FIELD = 'CHANGE_PROFILE_FIELD';
 export const SET_SUCCESS = 'SET_SUCCESS';
+export const CLEAR_ERROR = 'CLEAR_ERROR';
 
 const setProfile = profile => ({
   type: SET_PROFILE,
@@ -24,6 +25,10 @@ const setLoading = loading => ({
 const setSuccess = value => ({
   type: SET_SUCCESS,
   payload: value,
+});
+
+export const clearError = () => ({
+  type: CLEAR_ERROR,
 });
 
 export const onChangeProfileInfo = (name, value) => ({

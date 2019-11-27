@@ -25,6 +25,7 @@ import {
   onChangeProfileInfo,
   updateProfile,
   updateAvatar,
+  clearError,
 } from '../../../actions/profileActions';
 
 import styles from './styles';
@@ -44,7 +45,12 @@ class CreateAccountScreen extends Component {
   }
 
   componentDidUpdate() {
-    const {success} = this.props;
+    const {success, error, loading} = this.props;
+
+    if (error !== null && loading === false) {
+      this.dropDownAlertRef.alertWithType('error', 'Error', error);
+      clearErrorProfile();
+    }
 
     if (success) {
       this.props.navigation.navigate('Home');
@@ -200,6 +206,9 @@ const mapDispatchToProps = dispatch => {
     },
     onUpdateAvatar: (profile, token) => {
       dispatch(updateAvatar(profile, token));
+    },
+    clearErrorProfile: () => {
+      dispatch(clearError());
     },
   };
 };

@@ -43,26 +43,14 @@ class SignUpScreen extends Component {
   };
 
   componentDidUpdate() {
-    const {token, error, clearErrorUser} = this.props;
+    const {token, error, clearErrorUser, loading} = this.props;
 
     if (token !== null) {
       this.props.navigation.navigate('CreateAccount');
     }
 
-    let errorStr = '';
-
-    if (error !== null) {
-      if (error.username !== undefined) {
-        errorStr += 'Username: ' + error.username[0] + '\n';
-      }
-      if (error.email !== undefined) {
-        errorStr += 'Email: ' + error.email[0] + '\n';
-      }
-      if (error.password !== undefined) {
-        errorStr += 'Password: ' + error.password[0] + '\n';
-      }
-
-      Alert.alert('Error', errorStr);
+    if (error !== null && loading === false) {
+      this.dropDownAlertRef.alertWithType('error', 'Error', error);
       clearErrorUser();
     }
   }
@@ -72,7 +60,6 @@ class SignUpScreen extends Component {
     const {signUp} = this.props;
 
     if (agree) {
-      console.log(fullName, email, password, confirmPassword);
       signUp({
         username: fullName,
         email: email,
