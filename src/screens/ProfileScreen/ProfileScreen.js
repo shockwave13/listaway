@@ -138,8 +138,8 @@ class ProfileScreen extends Component {
 
     if (loading) {
       return (
-        <View style={{flex: 1}}>
-          <ActivityIndicator size="large" color="blue" />
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <ActivityIndicator size="large" color={colors.LIGHT_GREEN} />
         </View>
       );
     } else
