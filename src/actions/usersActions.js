@@ -101,3 +101,32 @@ export const loginWithGoogle = token => dispatch => {
     })
     .catch(error => dispatch(setError(error)));
 };
+
+export const createAccount = data => dispatch => {
+  dispatch(setLoading(true));
+
+  fetch(`${DEFAULT_URL}/api/v1/registration/`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: data.username,
+      email: data.email,
+      password1: data.password1,
+      password2: data.password2,
+    }),
+  })
+    .then(response => response.json())
+    .then(responseJson => {
+      if (responseJson.key !== undefined) {
+        dispatch(setToken(responseJson.key));
+        dispatch(setLoading(false));
+      } else {
+        dispatch(setError(responseJson));
+        dispatch(setLoading(false));
+      }
+    })
+    .catch(error => dispatch(setError(error)));
+};

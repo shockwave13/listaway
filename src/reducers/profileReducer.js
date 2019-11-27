@@ -3,12 +3,14 @@ import {
   SET_LOADING,
   SET_PROFILE,
   CHANGE_PROFILE_FIELD,
+  SET_SUCCESS,
 } from '../actions/profileActions';
 
 const initState = {
   profile: [],
   error: null,
   loading: true,
+  success: false,
 };
 
 const profileReducer = (state = initState, action) => {
@@ -38,6 +40,12 @@ const profileReducer = (state = initState, action) => {
           ...state.profile,
           [action.name]: action.value,
         },
+      };
+    }
+    case SET_SUCCESS: {
+      return {
+        ...state,
+        success: action.payload,
       };
     }
     default:

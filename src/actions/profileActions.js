@@ -4,6 +4,7 @@ export const SET_PROFILE = 'SET_PROFILE';
 export const SET_ERROR = 'SET_ERROR';
 export const SET_LOADING = 'SET_LOADING';
 export const CHANGE_PROFILE_FIELD = 'CHANGE_PROFILE_FIELD';
+export const SET_SUCCESS = 'SET_SUCCESS';
 
 const setProfile = profile => ({
   type: SET_PROFILE,
@@ -18,6 +19,11 @@ const setError = error => ({
 const setLoading = loading => ({
   type: SET_LOADING,
   payload: loading,
+});
+
+const setSuccess = value => ({
+  type: SET_SUCCESS,
+  payload: value,
 });
 
 export const onChangeProfileInfo = (name, value) => ({
@@ -48,7 +54,11 @@ export const getProfile = token => dispatch => {
     });
 };
 
-export const updateProfile = (newProfile, token) => dispatch => {
+export const updateProfile = (
+  newProfile,
+  token,
+  create = false,
+) => dispatch => {
   const profile = new FormData();
   profile.append('full_name', newProfile.full_name);
   profile.append('direct_tel', newProfile.direct_tel);
@@ -70,6 +80,9 @@ export const updateProfile = (newProfile, token) => dispatch => {
     .then(responseJson => {
       dispatch(setProfile(responseJson));
       dispatch(setLoading(false));
+      if (create !== false) {
+        dispatch(setSuccess(true));
+      }
     })
     .catch(error => {
       dispatch(setError(error));
