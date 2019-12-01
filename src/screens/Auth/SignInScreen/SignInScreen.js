@@ -16,6 +16,7 @@ import HeaderDefault from '../../../components/HeaderDefault';
 import InputDefault from '../../../components/InputDefault';
 import {LinearButton} from '../../../components/Buttons';
 import GradientText from '../../../components/GradientText';
+import LoadingView from '../../../components/Loading';
 
 import {AccessToken, LoginManager} from 'react-native-fbsdk';
 import {
@@ -140,16 +141,7 @@ class SignInScreen extends Component {
     const {loading} = this.props;
 
     if (loading) {
-      return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <StatusBar
-            barStyle="dark-content"
-            backgroundColor="white"
-            translucent={false}
-          />
-          <ActivityIndicator size="large" color={colors.LIGHT_GREEN} />
-        </View>
-      );
+      return <LoadingView loadingText="Logging in..." />;
     }
 
     return (

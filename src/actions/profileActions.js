@@ -85,13 +85,14 @@ export const updateProfile = (
 
       if (create !== false) {
         dispatch(setSuccess(true));
+        dispatch(setLoading(false));
       }
+      dispatch(setLoading(false));
     })
     .catch(error => {
+      dispatch(setLoading(false));
       dispatch(setError(error));
     });
-
-  dispatch(setLoading(false));
 };
 
 export const updateAvatar = (avatar, token) => dispatch => {
@@ -114,9 +115,16 @@ export const updateAvatar = (avatar, token) => dispatch => {
   })
     .then(response => response.json())
     .then(responseJson => {
-      dispatch(setProfile(responseJson));
+      if (Array.isArray(responseJson.avatar)) {
+        dispatch(setLoading(false));
+        dispatch(setError(responseJson.avatar));
+      } else {
+        dispatch(setProfile(responseJson));
+        dispatch(setLoading(false));
+      }
     })
-    .catch(error => dispatch(setError(error)));
-
-  dispatch(setLoading(false));
+    .catch(error => {
+      dispatch(setLoading(false));
+      dispatch(setError(error));
+    });
 };

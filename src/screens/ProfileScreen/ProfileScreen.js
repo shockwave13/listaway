@@ -31,6 +31,7 @@ import {
 } from '../../actions/profileActions';
 
 import styles from './styles';
+import LoadingView from '../../components/Loading';
 
 class ProfileScreen extends Component {
   constructor(props) {
@@ -147,11 +148,7 @@ class ProfileScreen extends Component {
     const {profile, loading, onChangeProfile} = this.props;
 
     if (loading) {
-      return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <ActivityIndicator size="large" color={colors.LIGHT_GREEN} />
-        </View>
-      );
+      return <LoadingView loadingText="Saving…" />;
     } else
       return (
         <SafeAreaView style={globalStyles.containerFull}>

@@ -6,6 +6,7 @@ import {
   ScrollView,
   Image,
   AsyncStorage,
+  ActivityIndicator,
 } from 'react-native';
 import {Icon, Button} from 'react-native-elements';
 import {connect} from 'react-redux';
@@ -15,8 +16,9 @@ import ImagePicker from 'react-native-image-picker';
 import GradientText from '../../../components/GradientText';
 import InputDefault from '../../../components/InputDefault';
 import {LinearButton} from '../../../components/Buttons';
+import LoadingView from '../../../components/Loading';
 
-import {globalStyles, fonts, colors} from '../../../constants';
+import {globalStyles} from '../../../constants';
 
 import {DEFAULT_URL} from '../../../config/server';
 
@@ -45,7 +47,7 @@ class CreateAccountScreen extends Component {
   }
 
   componentDidUpdate() {
-    const {success, error, loading} = this.props;
+    const {success, error, loading, clearErrorProfile} = this.props;
 
     if (error !== null && loading === false) {
       this.dropDownAlertRef.alertWithType('error', 'Error', error);
@@ -91,96 +93,99 @@ class CreateAccountScreen extends Component {
   };
 
   render() {
-    const {profile, onChangeProfile} = this.props;
+    const {profile, onChangeProfile, loading} = this.props;
 
-    return (
-      <SafeAreaView style={globalStyles.containerFull}>
-        <StatusBar
-          translucent={false}
-          barStyle="dark-content"
-          backgroundColor="white"
-        />
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          contentContainerStyle={{flexGrow: 1, paddingBottom: 40}}>
-          <View style={{flex: 1, paddingHorizontal: 15}}>
-            <View style={[globalStyles.block, {alignItems: 'center'}]}>
-              <View>
-                <View style={styles.imageContainer}>
-                  <Image
-                    source={{
-                      uri: `${DEFAULT_URL}${profile.avatar}`,
-                    }}
-                    style={{flex: 1, width: null, height: null}}
-                    resizeMode="cover"
+    if (loading) {
+      return <LoadingView loadingText="Creating…" />;
+    } else
+      return (
+        <SafeAreaView style={globalStyles.containerFull}>
+          <StatusBar
+            translucent={false}
+            barStyle="dark-content"
+            backgroundColor="white"
+          />
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            contentContainerStyle={{flexGrow: 1, paddingBottom: 40}}>
+            <View style={{flex: 1, paddingHorizontal: 15}}>
+              <View style={[globalStyles.block, {alignItems: 'center'}]}>
+                <View>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={{
+                        uri: `${DEFAULT_URL}${profile.avatar}`,
+                      }}
+                      style={{flex: 1, width: null, height: null}}
+                      resizeMode="cover"
+                    />
+                  </View>
+                  <Icon
+                    name="pencil"
+                    type="material-community"
+                    color="white"
+                    size={20}
+                    disabledStyle={{backgroundColor: 'silver'}}
+                    containerStyle={styles.containerPen}
+                    underlayColor="transparent"
+                    onPress={this.handlePressChangeImage}
                   />
                 </View>
-                <Icon
-                  name="pencil"
-                  type="material-community"
-                  color="white"
-                  size={20}
-                  disabledStyle={{backgroundColor: 'silver'}}
-                  containerStyle={styles.containerPen}
-                  underlayColor="transparent"
-                  onPress={this.handlePressChangeImage}
-                />
+              </View>
+              <View style={styles.profileBlock}>
+                <View style={globalStyles.block}>
+                  <GradientText style={globalStyles.headerTitle}>
+                    Profile
+                  </GradientText>
+                </View>
+                <View style={globalStyles.block}>
+                  <InputDefault
+                    name="full_name"
+                    value={profile.full_name}
+                    label="Full name"
+                    onChangeText={onChangeProfile}
+                  />
+                  <InputDefault
+                    name="direct_tel"
+                    value={profile.direct_tel}
+                    label="Direct Tel"
+                    onChangeText={onChangeProfile}
+                  />
+                  <InputDefault
+                    name="title"
+                    value={profile.title}
+                    label="Title"
+                    onChangeText={onChangeProfile}
+                  />
+                  <InputDefault
+                    name="website"
+                    value={profile.website}
+                    label="Website"
+                    onChangeText={onChangeProfile}
+                  />
+                  <InputDefault
+                    name="job_title"
+                    value={profile.job_title}
+                    label="Job Title"
+                    onChangeText={onChangeProfile}
+                  />
+                  <InputDefault
+                    name="office_tel"
+                    value={profile.office_tel}
+                    label="Office Tel"
+                    onChangeText={onChangeProfile}
+                  />
+                </View>
+                <View style={globalStyles.block}>
+                  <LinearButton title="SAVE" onPress={this.handlePressSave} />
+                </View>
               </View>
             </View>
-            <View style={styles.profileBlock}>
-              <View style={globalStyles.block}>
-                <GradientText style={globalStyles.headerTitle}>
-                  Profile
-                </GradientText>
-              </View>
-              <View style={globalStyles.block}>
-                <InputDefault
-                  name="full_name"
-                  value={profile.full_name}
-                  label="Full name"
-                  onChangeText={onChangeProfile}
-                />
-                <InputDefault
-                  name="direct_tel"
-                  value={profile.direct_tel}
-                  label="Direct Tel"
-                  onChangeText={onChangeProfile}
-                />
-                <InputDefault
-                  name="title"
-                  value={profile.title}
-                  label="Title"
-                  onChangeText={onChangeProfile}
-                />
-                <InputDefault
-                  name="website"
-                  value={profile.website}
-                  label="Website"
-                  onChangeText={onChangeProfile}
-                />
-                <InputDefault
-                  name="job_title"
-                  value={profile.job_title}
-                  label="Job Title"
-                  onChangeText={onChangeProfile}
-                />
-                <InputDefault
-                  name="office_tel"
-                  value={profile.office_tel}
-                  label="Office Tel"
-                  onChangeText={onChangeProfile}
-                />
-              </View>
-              <View style={globalStyles.block}>
-                <LinearButton title="SAVE" onPress={this.handlePressSave} />
-              </View>
-            </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
 
-        <DropdownAlert ref={ref => (this.dropDownAlertRef = ref)} />
-      </SafeAreaView>
-    );
+          <DropdownAlert ref={ref => (this.dropDownAlertRef = ref)} />
+        </SafeAreaView>
+      );
   }
 }
 

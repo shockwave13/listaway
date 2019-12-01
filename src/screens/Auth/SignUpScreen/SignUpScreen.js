@@ -23,6 +23,7 @@ import {globalStyles, fonts, colors} from '../../../constants';
 import styles from './styles';
 
 import {createAccount, clearError} from '../../../actions/usersActions';
+import LoadingView from '../../../components/Loading';
 
 class SignUpScreen extends Component {
   constructor(props) {
@@ -76,17 +77,10 @@ class SignUpScreen extends Component {
   };
   render() {
     const {fullName, email, password, confirmPassword} = this.state;
-    if (this.state.isLoading) {
-      return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <StatusBar
-            barStyle="dark-content"
-            backgroundColor="white"
-            translucent={false}
-          />
-          <ActivityIndicator size="large" color={colors.LIGHT_GREEN} />
-        </View>
-      );
+    const {loading} = this.props;
+
+    if (loading) {
+      return <LoadingView loadingText="Registering…" />;
     }
     return (
       <ScrollView
