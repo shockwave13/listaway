@@ -1,6 +1,16 @@
 import React, {Component} from 'react';
-import {View, Platform, StatusBar, Text, ScrollView} from 'react-native';
+import {
+  View,
+  Platform,
+  StatusBar,
+  Text,
+  ScrollView,
+  Image,
+  FlatList,
+  Dimensions,
+} from 'react-native';
 import {Icon, Input, Button} from 'react-native-elements';
+import ImagePicker from 'react-native-image-picker';
 
 import GradientText from '../../components/GradientText';
 
@@ -11,9 +21,10 @@ class CreateTour extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      photoList: null,
+      photoList: [],
       songList: null,
       showRightMenu: false,
+      imageSource: null,
     };
   }
 
@@ -22,10 +33,64 @@ class CreateTour extends Component {
       showRightMenu: !this.state.showRightMenu,
     });
 
+  handlePressPickImage = () => {
+    const options = {
+      title: 'Select Avatar',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    // Open Image Library:
+    ImagePicker.launchImageLibrary(options, response => {
+      const {photoList} = this.state;
+
+      const newPhotoList = photoList.concat({uri: response.uri});
+      this.setState({
+        photoList: newPhotoList,
+      });
+    });
+  };
+
+  handlePressCamera = () => {
+    const options = {
+      mediaType: 'photo',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    // Launch Camera:
+    ImagePicker.launchCamera(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
+      } else {
+        const {photoList} = this.state;
+
+        const newPhotoList = photoList.concat({uri: response.uri});
+        this.setState({
+          photoList: newPhotoList,
+        });
+      }
+    });
+  };
+
   render() {
     return (
-      <ScrollView contentContainerStyle={globalStyles.containerFull}>
-        <StatusBar translucent={true} backgroundColor="transparent" />
+      <ScrollView
+        contentContainerStyle={globalStyles.containerFull}
+        nestedScrollEnabled>
+        <StatusBar
+          translucent={true}
+          backgroundColor="transparent"
+          barStyle="light-content"
+        />
         <View style={styles.header}>
           <Icon
             name="menu"
@@ -53,7 +118,32 @@ class CreateTour extends Component {
             style={{flex: 1, justifyContent: 'space-between', marginTop: 20}}>
             <View style={styles.photoBlock}>
               <Text style={styles.label}>Photos:</Text>
-              <View style={{height: 200}}></View>
+              <View>
+                <FlatList
+                  nestedScrollEnabled
+                  alwaysBounceHorizontal
+                  data={this.state.photoList}
+                  numColumns={2}
+                  renderItem={({item}) => (
+                    <View
+                      style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        paddingHorizontal: 5,
+                      }}>
+                      <Image
+                        source={item}
+                        style={{
+                          width: (Dimensions.get('window').width - 60) / 2,
+                          height: 100,
+                        }}
+                        resizeMode="contain"
+                      />
+                    </View>
+                  )}
+                />
+              </View>
             </View>
             <View style={styles.musicBlock}>
               <Text style={styles.label}>Songs:</Text>
@@ -97,6 +187,15 @@ class CreateTour extends Component {
                 type="ionicon"
                 color={colors.LIGHT_GREEN}
                 size={24}
+                onPress={this.handlePressPickImage}
+              />
+              <Icon
+                reverse
+                name="ios-camera"
+                type="ionicon"
+                color={colors.LIGHT_GREEN}
+                size={24}
+                onPress={this.handlePressCamera}
               />
               <Icon
                 reverse
