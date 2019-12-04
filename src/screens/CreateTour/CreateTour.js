@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {Icon, Input, Button} from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
+import DocumentPicker from 'react-native-document-picker';
 
 import GradientText from '../../components/GradientText';
 
@@ -79,6 +80,27 @@ class CreateTour extends Component {
         });
       }
     });
+  };
+
+  handlePressSong = async () => {
+    // Pick a single file
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.audio],
+      });
+      console.log(
+        res.uri,
+        res.type, // mime type
+        res.name,
+        res.size,
+      );
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
   };
 
   render() {
@@ -203,6 +225,7 @@ class CreateTour extends Component {
                 type="ionicon"
                 color={colors.LIGHT_GREEN}
                 size={24}
+                onPress={this.handlePressSong}
               />
             </View>
           ) : null}
