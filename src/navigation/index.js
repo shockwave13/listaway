@@ -10,6 +10,7 @@ import ConfirmCodeScreen from '../screens/Auth/ConfirmCodeScreen';
 import ChangePasswordScreen from '../screens/Auth/ChangePasswordScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
 import CreateAccountScreen from '../screens/Auth/CreateAccountScreen';
+import CreateTour from '../screens/CreateTour';
 
 import ProfileScreen from '../screens/ProfileScreen';
 
@@ -21,7 +22,7 @@ const AppDrawerNavigation = createDrawerNavigator({
     },
   },
   CreateTour: {
-    screen: HomeScreen,
+    screen: CreateTour,
     navigationOptions: {
       title: 'Create Tour',
     },
@@ -87,7 +88,7 @@ const AppNavigation = createStackNavigator(
     },
   },
   {
-    initialRouteName: 'Auth',
+    initialRouteName: 'Home',
     defaultNavigationOptions: {
       header: null,
     },

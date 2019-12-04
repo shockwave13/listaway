@@ -16,7 +16,7 @@ const globalStyles = StyleSheet.create({
     marginTop: 20,
   },
   containerFull: {
-    flex: 1,
+    flexGrow: 1,
   },
   containerBody: {
     flex: 1,
