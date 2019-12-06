@@ -12,6 +12,7 @@ import {
 import {Icon, Input, Button} from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Video from 'react-native-video';
 
 import GradientText from '../../components/GradientText';
@@ -28,6 +29,7 @@ class CreateTour extends Component {
       showRightMenu: false,
       playNow: null,
       pausePlay: false,
+      x: null,
     };
   }
 
@@ -139,12 +141,44 @@ class CreateTour extends Component {
             <GradientText style={globalStyles.headerTitle}>
               Create Tour
             </GradientText>
-            <Input
-              leftIcon={{name: 'ios-search', type: 'ionicon', color: 'silver'}}
-              placeholder="Address"
-              inputStyle={styles.inputStyle}
-              containerStyle={{paddingHorizontal: 0}}
-            />
+            <View
+              style={{
+                borderWidth: 1,
+                borderColor: colors.LIGHT_BLUE,
+                padding: 2,
+              }}>
+              <GooglePlacesAutocomplete
+                query={{
+                  // available options: https://developers.google.com/places/web-service/autocomplete
+                  key: 'AIzaSyAn0yEoTrNbj6uOmPSTvmZIVdwe2k6WFRk',
+                  language: 'en', // language of the results
+                  types: '(cities)', // default: 'geocode'
+                }}
+                renderDescription={row => row.description}
+                nearbyPlacesAPI="GooglePlacesSearch" // Which API to use:
+                onPress={(data, details = null) => {}}
+                placeholder="Enter Location"
+                minLength={2}
+                autoFocus={false}
+                returnKeyType={'search'}
+                fetchDetails={true}
+                styles={{
+                  textInputContainer: {
+                    backgroundColor: 'rgba(0,0,0,0)',
+                    borderTopWidth: 0,
+                    borderBottomWidth: 0,
+                  },
+                  textInput: {
+                    marginLeft: 0,
+                    marginRight: 0,
+                    height: 38,
+                    color: '#5d5d5d',
+                    fontSize: 16,
+                  },
+                }}
+                currentLocation={false}
+              />
+            </View>
           </View>
           <View
             style={{flex: 1, justifyContent: 'space-between', marginTop: 20}}>
@@ -192,7 +226,7 @@ class CreateTour extends Component {
                   onError={this.videoError} // Callback when video cannot be loaded
                 />
               ) : null}
-              <View>
+              <View style={{height: 200}}>
                 <FlatList
                   data={this.state.songList}
                   numColumns={3}
