@@ -12,6 +12,7 @@ import {
 import {Icon, Input, Button} from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
+import Video from 'react-native-video';
 
 import GradientText from '../../components/GradientText';
 
@@ -23,9 +24,10 @@ class CreateTour extends Component {
     super(props);
     this.state = {
       photoList: [],
-      songList: null,
+      songList: [],
       showRightMenu: false,
-      imageSource: null,
+      playNow: null,
+      pausePlay: false,
     };
   }
 
@@ -82,24 +84,32 @@ class CreateTour extends Component {
     });
   };
 
-  handlePressSong = async () => {
-    // Pick a single file
+  handlePressAddSong = async () => {
     try {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.audio],
       });
-      console.log(
-        res.uri,
-        res.type, // mime type
-        res.name,
-        res.size,
-      );
+
+      this.setState(prevState => ({
+        songList: [...prevState.songList, res.uri],
+      }));
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker, exit any dialogs or menus and move on
       } else {
         throw err;
       }
+    }
+  };
+
+  handlePressSong = (uriIncome, index) => {
+    if (this.state.playNow !== null && index === this.state.playNow.id) {
+      this.setState({
+        playNow: null,
+      });
+    } else {
+      this.setState({
+        playNow: {uri: uriIncome, id: index},
+      });
     }
   };
 
@@ -169,7 +179,52 @@ class CreateTour extends Component {
             </View>
             <View style={styles.musicBlock}>
               <Text style={styles.label}>Songs:</Text>
-              <View style={{height: 200}}></View>
+
+              {this.state.playNow !== null ? (
+                <Video
+                  source={{uri: this.state.playNow.uri}} // Can be a URL or a local file.
+                  ref={ref => {
+                    this.player = ref;
+                  }} // Store reference
+                  audioOnly={true}
+                  playInBackground={false}
+                  onBuffer={this.onBuffer} // Callback when remote video is buffering
+                  onError={this.videoError} // Callback when video cannot be loaded
+                />
+              ) : null}
+              <View>
+                <FlatList
+                  data={this.state.songList}
+                  numColumns={3}
+                  renderItem={({item, index}) => (
+                    <Icon
+                      name={
+                        this.state.playNow !== null &&
+                        this.state.playNow.id === index &&
+                        !this.state.pausePlay
+                          ? 'stop-circle'
+                          : 'music'
+                      }
+                      type="font-awesome"
+                      color={colors.LIGHT_BLUE}
+                      size={40}
+                      containerStyle={{
+                        width: 100,
+                        height: 100,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderWidth: 1,
+                        borderColor: colors.LIGHT_BLUE,
+                        margin: 5,
+                      }}
+                      onPress={() => {
+                        this.handlePressSong(item, index);
+                      }}
+                    />
+                  )}
+                />
+              </View>
             </View>
           </View>
           <View>
@@ -225,7 +280,7 @@ class CreateTour extends Component {
                 type="ionicon"
                 color={colors.LIGHT_GREEN}
                 size={24}
-                onPress={this.handlePressSong}
+                onPress={this.handlePressAddSong} //this.handlePressSong}
               />
             </View>
           ) : null}
