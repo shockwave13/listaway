@@ -3,6 +3,7 @@ import {DEFAULT_URL} from '../config/server';
 export const SET_TOKEN = 'SET_TOKEN';
 export const SET_LOADING = 'SET_STATUS';
 export const SET_ERROR = 'SET_ERROR';
+export const CLEAR_TOKEN = 'CLEAR_TOKEN';
 
 const setToken = token => ({
   type: SET_TOKEN,
@@ -21,6 +22,12 @@ const setError = error => ({
 
 export const clearError = () => dispatch => {
   dispatch(setError(null));
+};
+
+export const clearToken = () => dispatch => {
+  dispatch({
+    type: CLEAR_TOKEN,
+  });
 };
 
 export const loginWithEmail = (e, p) => dispatch => {

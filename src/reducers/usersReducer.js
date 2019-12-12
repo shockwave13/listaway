@@ -1,6 +1,11 @@
 import {AsyncStorage} from 'react-native';
 
-import {SET_TOKEN, SET_LOADING, SET_ERROR} from '../actions/usersActions';
+import {
+  SET_TOKEN,
+  SET_LOADING,
+  SET_ERROR,
+  CLEAR_TOKEN,
+} from '../actions/usersActions';
 
 const initState = {
   token: null,
@@ -27,6 +32,12 @@ const usersReducer = (state = initState, action) => {
       return {
         ...state,
         error: action.payload,
+      };
+    }
+    case CLEAR_TOKEN: {
+      return {
+        ...state,
+        token: null,
       };
     }
     default:
