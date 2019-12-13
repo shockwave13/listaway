@@ -21,7 +21,11 @@ class Auth extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.authStatus);
+    const {token} = this.props;
+
+    if (token !== null) {
+      this.props.navigation.navigate('Home');
+    }
   }
 
   render() {
@@ -112,7 +116,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    authStatus: state.users.authStatus,
+    token: state.users.token,
   };
 };
 

@@ -1,45 +1,43 @@
+import {AsyncStorage} from 'react-native';
+
 import {
-  SET_KEY_EMAIL_AUTH,
-  SET_KEY_FACEBOOK_AUTH,
-  SET_KEY_GOOGLE_AUTH,
-  SET_USER_ID,
+  SET_TOKEN,
+  SET_LOADING,
+  SET_ERROR,
+  CLEAR_TOKEN,
 } from '../actions/usersActions';
 
 const initState = {
-  userId: '',
-  keyEmail: '',
-  keyFacebook: '',
-  keyGoogle: '',
-  authStatus: false,
+  token: null,
+  loading: false,
+  error: null,
 };
 
 const usersReducer = (state = initState, action) => {
   switch (action.type) {
-    case SET_KEY_EMAIL_AUTH: {
+    case SET_TOKEN: {
+      AsyncStorage.setItem('token', action.payload);
       return {
         ...state,
-        keyEmail: action.key,
-        authStatus: true,
+        token: action.payload,
       };
     }
-    case SET_KEY_FACEBOOK_AUTH: {
+    case SET_LOADING: {
       return {
         ...state,
-        keyFacebook: action.key,
-        authStatus: true,
+        loading: action.payload,
       };
     }
-    case SET_KEY_GOOGLE_AUTH: {
+    case SET_ERROR: {
       return {
         ...state,
-        keyGoogle: action.key,
-        authStatus: true,
+        error: action.payload,
       };
     }
-    case SET_USER_ID: {
+    case CLEAR_TOKEN: {
       return {
         ...state,
-        userId: action.id,
+        token: null,
       };
     }
     default:

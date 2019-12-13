@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createDrawerNavigator} from 'react-navigation-drawer';
@@ -10,51 +12,54 @@ import ConfirmCodeScreen from '../screens/Auth/ConfirmCodeScreen';
 import ChangePasswordScreen from '../screens/Auth/ChangePasswordScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
 import CreateAccountScreen from '../screens/Auth/CreateAccountScreen';
+import CreateTour from '../screens/CreateTour';
+import ProfileScreen from '../screens/ProfileScreen';
 
-const AppDrawerNavigation = createDrawerNavigator({
-  TourList: {
-    screen: HomeScreen,
-    navigationOptions: {
-      title: 'Tour List',
+import DefaultDrawer from './DefaultDrawer';
+
+const AppDrawerNavigation = createDrawerNavigator(
+  {
+    TourList: {
+      screen: HomeScreen,
+      navigationOptions: {
+        title: 'Tour List',
+      },
+    },
+    CreateTour: {
+      screen: CreateTour,
+      navigationOptions: {
+        title: 'Create Tour',
+      },
+    },
+    OrderTour: {
+      screen: HomeScreen,
+      navigationOptions: {
+        title: 'Order Tour',
+      },
+    },
+    Profile: {
+      screen: ProfileScreen,
+      navigationOptions: {
+        title: 'Profile',
+      },
+    },
+    Settings: {
+      screen: HomeScreen,
+      navigationOptions: {
+        title: 'Settins',
+      },
+    },
+    About: {
+      screen: HomeScreen,
+      navigationOptions: {
+        title: 'About',
+      },
     },
   },
-  CreateTour: {
-    screen: HomeScreen,
-    navigationOptions: {
-      title: 'Create Tour',
-    },
+  {
+    contentComponent: props => <DefaultDrawer {...props} />,
   },
-  OrderTour: {
-    screen: HomeScreen,
-    navigationOptions: {
-      title: 'Order Tour',
-    },
-  },
-  Profile: {
-    screen: HomeScreen,
-    navigationOptions: {
-      title: 'Profile',
-    },
-  },
-  Settings: {
-    screen: HomeScreen,
-    navigationOptions: {
-      title: 'Settins',
-    },
-  },
-  About: {
-    screen: HomeScreen,
-    navigationOptions: {
-      title: 'About',
-    },
-  },
-  Logout: {
-    screen: HomeScreen,
-    navigationOptions: {
-      title: 'Logout',
-    },
-  },
-});
+);
 
 const AppNavigation = createStackNavigator(
   {

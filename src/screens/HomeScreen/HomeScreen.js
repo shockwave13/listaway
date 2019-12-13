@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {View, Text, BackHandler} from 'react-native';
+import {View, Text, BackHandler, SafeAreaView, StatusBar} from 'react-native';
+import {Icon} from 'react-native-elements';
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -8,7 +9,6 @@ class HomeScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.navigation.openDrawer();
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
   }
 
@@ -22,9 +22,21 @@ class HomeScreen extends Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
+        <StatusBar translucent={false} />
+        <View style={{alignItems: 'flex-start', marginLeft: 15}}>
+          <Icon
+            name="menu"
+            type="material-community"
+            color="silver"
+            size={32}
+            onPress={() => {
+              this.props.navigation.openDrawer();
+            }}
+          />
+        </View>
         <Text>Home</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 }

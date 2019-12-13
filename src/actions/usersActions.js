@@ -1,43 +1,139 @@
-export const SET_KEY_EMAIL_AUTH = 'SET_KEY_EMAIL_AUTH';
-export const SET_KEY_GOOGLE_AUTH = 'SET_KEY_GOOGLE_AUTH';
-export const SET_KEY_FACEBOOK_AUTH = 'SET_KEY_FACEBOOK_AUTH';
-export const SET_USER_ID = 'SET_USER_ID';
+import {DEFAULT_URL} from '../config/server';
 
-const setKeyEmailAuth = key => ({
-  type: SET_KEY_EMAIL_AUTH,
-  key,
+export const SET_TOKEN = 'SET_TOKEN';
+export const SET_LOADING = 'SET_STATUS';
+export const SET_ERROR = 'SET_ERROR';
+export const CLEAR_TOKEN = 'CLEAR_TOKEN';
+
+const setToken = token => ({
+  type: SET_TOKEN,
+  payload: token,
 });
 
-const setKeyGoogleAuth = key => ({
-  type: SET_KEY_GOOGLE_AUTH,
-  key,
+const setLoading = loading => ({
+  type: SET_LOADING,
+  payload: loading,
 });
 
-const setKeyFacebookAuth = key => ({
-  type: SET_KEY_FACEBOOK_AUTH,
-  key,
+const setError = error => ({
+  type: SET_ERROR,
+  payload: error,
 });
 
-export const setAuthKey = (type, key) => dispatch => {
-  switch (type) {
-    case 'email': {
-      dispatch(setKeyEmailAuth(key));
-      break;
-    }
-    case 'facebook': {
-      dispatch(setKeyFacebookAuth(key));
-      break;
-    }
-    case 'google': {
-      dispatch(setKeyGoogleAuth(key));
-      break;
-    }
-    default:
-      return null;
-  }
+export const clearError = () => dispatch => {
+  dispatch(setError(null));
 };
 
-export const setUserId = id => ({
-  type: SET_USER_ID,
-  id,
-});
+export const clearToken = () => dispatch => {
+  dispatch({
+    type: CLEAR_TOKEN,
+  });
+};
+
+export const loginWithEmail = (e, p) => dispatch => {
+  dispatch(setLoading(true));
+
+  fetch(`${DEFAULT_URL}/api/v1/login/`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: e,
+      password: p,
+    }),
+  })
+    .then(response => response.json())
+    .then(responseJson => {
+      if (responseJson.key !== undefined) {
+        dispatch(setToken(responseJson.key));
+        dispatch(setLoading(false));
+      } else {
+        dispatch(setError(responseJson));
+        dispatch(setLoading(false));
+      }
+    })
+    .catch(error => dispatch(setError(error)));
+};
+
+export const loginWithFacebook = token => dispatch => {
+  dispatch(setLoading(true));
+
+  fetch(`${DEFAULT_URL}/api/v1/facebook/`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      access_token: token,
+    }),
+  })
+    .then(response => response.json())
+    .then(responseJson => {
+      if (responseJson.key !== undefined) {
+        dispatch(setToken(responseJson.key));
+        dispatch(setLoading(false));
+      } else {
+        dispatch(setError(responseJson));
+        dispatch(setLoading(false));
+      }
+    })
+    .catch(error => dispatch(setError(error)));
+};
+
+export const loginWithGoogle = token => dispatch => {
+  dispatch(setLoading(true));
+
+  fetch(`${DEFAULT_URL}/api/v1/google/`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      access_token: token,
+    }),
+  })
+    .then(response => response.json())
+    .then(responseJson => {
+      if (responseJson.key !== undefined) {
+        dispatch(setToken(responseJson.key));
+        dispatch(setLoading(false));
+      } else {
+        dispatch(setError(responseJson));
+        dispatch(setLoading(false));
+      }
+    })
+    .catch(error => dispatch(setError(error)));
+};
+
+export const createAccount = data => dispatch => {
+  dispatch(setLoading(true));
+
+  fetch(`${DEFAULT_URL}/api/v1/registration/`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: data.username,
+      email: data.email,
+      password1: data.password1,
+      password2: data.password2,
+    }),
+  })
+    .then(response => response.json())
+    .then(responseJson => {
+      if (responseJson.key !== undefined) {
+        dispatch(setToken(responseJson.key));
+        dispatch(setLoading(false));
+      } else {
+        dispatch(setError(responseJson));
+        dispatch(setLoading(false));
+      }
+    })
+    .catch(error => dispatch(setError(error)));
+};

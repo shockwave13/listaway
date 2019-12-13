@@ -7,6 +7,7 @@ import {
   StatusBar,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {CheckBox} from 'react-native-elements';
 import {connect} from 'react-redux';
@@ -21,9 +22,8 @@ import {globalStyles, fonts, colors} from '../../../constants';
 
 import styles from './styles';
 
-import {registration} from '../../../services/api';
-
-import {setAuthKey, setUserId} from '../../../actions/usersActions';
+import {createAccount, clearError} from '../../../actions/usersActions';
+import LoadingView from '../../../components/Loading';
 
 class SignUpScreen extends Component {
   constructor(props) {
@@ -34,7 +34,6 @@ class SignUpScreen extends Component {
       password: '',
       confirmPassword: '',
       agree: false,
-      isLoading: false,
     };
   }
 
@@ -45,36 +44,29 @@ class SignUpScreen extends Component {
   };
 
   componentDidUpdate() {
-    if (this.props.users.authStatus) {
+    const {token, error, clearErrorUser, loading} = this.props;
+
+    if (token !== null) {
       this.props.navigation.navigate('CreateAccount');
+    }
+
+    if (error !== null && loading === false) {
+      this.dropDownAlertRef.alertWithType('error', 'Error', error);
+      clearErrorUser();
     }
   }
 
   handlePressSignUp = async () => {
     const {fullName, email, password, confirmPassword, agree} = this.state;
+    const {signUp} = this.props;
 
     if (agree) {
-      this.setState({
-        isLoading: true,
+      signUp({
+        username: fullName,
+        email: email,
+        password1: password,
+        password2: confirmPassword,
       });
-      const response = await registration(
-        fullName,
-        email,
-        password,
-        confirmPassword,
-      );
-      this.setState({
-        isLoading: false,
-      });
-      if (response.status === 201) {
-        const responseBody = await response.json();
-
-        this.props.setAuth('email', responseBody.key);
-        this.props.setUser(responseBody.user);
-      } else {
-        const responseBody = await response.text();
-        this.dropDownAlertRef.alertWithType('error', 'Error', responseBody);
-      }
     } else {
       this.dropDownAlertRef.alertWithType(
         'error',
@@ -85,17 +77,10 @@ class SignUpScreen extends Component {
   };
   render() {
     const {fullName, email, password, confirmPassword} = this.state;
-    if (this.state.isLoading) {
-      return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <StatusBar
-            barStyle="dark-content"
-            backgroundColor="white"
-            translucent={false}
-          />
-          <ActivityIndicator size="large" color={colors.LIGHT_GREEN} />
-        </View>
-      );
+    const {loading} = this.props;
+
+    if (loading) {
+      return <LoadingView loadingText="Registering…" />;
     }
     return (
       <ScrollView
@@ -122,7 +107,7 @@ class SignUpScreen extends Component {
                 <InputDefault
                   name="fullName"
                   value={fullName}
-                  label="Surname"
+                  label="Username"
                   onChangeText={this.onChangeState}
                 />
                 <InputDefault
@@ -177,17 +162,19 @@ class SignUpScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    users: state.users,
+    loading: state.users.loading,
+    token: state.users.token,
+    error: state.users.error,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setAuth: (type, key) => {
-      dispatch(setAuthKey(type, key));
+    signUp: data => {
+      dispatch(createAccount(data));
     },
-    setUser: id => {
-      dispatch(setUserId(id));
+    clearErrorUser: () => {
+      dispatch(clearError());
     },
   };
 };
