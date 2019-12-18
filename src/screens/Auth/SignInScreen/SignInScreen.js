@@ -46,9 +46,9 @@ class SignInScreen extends Component {
   }
 
   componentDidMount() {
-    const {token} = this.props;
+    const {user} = this.props;
 
-    if (token !== null) {
+    if (user !== null) {
       this.props.navigation.navigate('Home');
     }
 
@@ -247,4 +247,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignInScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SignInScreen);

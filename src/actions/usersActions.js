@@ -4,6 +4,12 @@ export const SET_TOKEN = 'SET_TOKEN';
 export const SET_LOADING = 'SET_STATUS';
 export const SET_ERROR = 'SET_ERROR';
 export const CLEAR_TOKEN = 'CLEAR_TOKEN';
+export const SET_USER = 'SET_USER';
+
+const setUser = user => ({
+  type: SET_USER,
+  payload: user,
+});
 
 const setToken = token => ({
   type: SET_TOKEN,
@@ -33,7 +39,7 @@ export const clearToken = () => dispatch => {
 export const loginWithEmail = (e, p) => dispatch => {
   dispatch(setLoading(true));
 
-  fetch(`${DEFAULT_URL}/api/v1/login/`, {
+  fetch(`http://3.136.62.106/Listeasy/backend/index.php/user/user_login`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -46,13 +52,8 @@ export const loginWithEmail = (e, p) => dispatch => {
   })
     .then(response => response.json())
     .then(responseJson => {
-      if (responseJson.key !== undefined) {
-        dispatch(setToken(responseJson.key));
-        dispatch(setLoading(false));
-      } else {
-        dispatch(setError(responseJson));
-        dispatch(setLoading(false));
-      }
+      dispatch(setUser(responseJson));
+      dispatch(setLoading(false));
     })
     .catch(error => dispatch(setError(error)));
 };
