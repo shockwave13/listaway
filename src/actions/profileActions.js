@@ -40,12 +40,12 @@ export const onChangeProfileInfo = (name, value) => ({
 export const getProfile = token => dispatch => {
   dispatch(setLoading(true));
 
-  fetch(`${DEFAULT_URL}/api/v1/profile/`, {
+  fetch(`http://3.136.62.106/Listeasy/backend/index.php/user/user_signup`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Token ${token}`,
+      //Authorization: `Token ${token}`,
     },
   })
     .then(response => response.json())
@@ -59,12 +59,9 @@ export const getProfile = token => dispatch => {
     });
 };
 
-export const updateProfile = (
-  newProfile,
-  token,
-  create = false,
-) => dispatch => {
+export const updateProfile = (newProfile, userid) => dispatch => {
   const profile = new FormData();
+  profile.append('userid', userid);
   profile.append('full_name', newProfile.full_name);
   profile.append('direct_tel', newProfile.direct_tel);
   profile.append('title', newProfile.title);
@@ -72,21 +69,19 @@ export const updateProfile = (
   profile.append('job_title', newProfile.job_title);
   profile.append('office_tel', newProfile.office_tel);
 
-  fetch(`${DEFAULT_URL}/api/v1/profile/`, {
-    method: 'PUT',
-    headers: {
-      Authorization: `Token ${token}`,
+  fetch(
+    `http://3.136.62.106/Listeasy/backend/index.php/user/user_update_profile`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      body: profile,
     },
-    body: profile,
-  })
+  )
     .then(response => response.json())
     .then(responseJson => {
       dispatch(setProfile(responseJson));
-
-      if (create !== false) {
-        dispatch(setSuccess(true));
-        dispatch(setLoading(false));
-      }
       dispatch(setLoading(false));
     })
     .catch(error => {

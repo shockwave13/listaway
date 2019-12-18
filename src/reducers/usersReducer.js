@@ -4,11 +4,13 @@ import {
   SET_TOKEN,
   SET_LOADING,
   SET_ERROR,
-  CLEAR_TOKEN,
+  CLEAR_USER,
   SET_USER,
 } from '../actions/usersActions';
 
 const initState = {
+  user: null,
+  userStatus: false,
   token: null,
   loading: false,
   error: null,
@@ -21,6 +23,7 @@ const usersReducer = (state = initState, action) => {
       return {
         ...state,
         user: action.payload,
+        userStatus: true,
       };
     }
     case SET_TOKEN: {
@@ -42,10 +45,11 @@ const usersReducer = (state = initState, action) => {
         error: action.payload,
       };
     }
-    case CLEAR_TOKEN: {
+    case CLEAR_USER: {
       return {
         ...state,
-        token: null,
+        user: null,
+        userStatus: false,
       };
     }
     default:

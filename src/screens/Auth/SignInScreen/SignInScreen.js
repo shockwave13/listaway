@@ -46,9 +46,9 @@ class SignInScreen extends Component {
   }
 
   componentDidMount() {
-    const {user} = this.props;
+    const {userStatus} = this.props;
 
-    if (user !== null) {
+    if (userStatus === true) {
       this.props.navigation.navigate('Home');
     }
 
@@ -60,13 +60,13 @@ class SignInScreen extends Component {
   }
 
   componentDidUpdate() {
-    const {error, token, loading} = this.props;
+    const {error, token, loading, userStatus} = this.props;
 
     if (error !== null && loading === false) {
       this.showError(error);
     }
 
-    if (token !== null) {
+    if (userStatus === true) {
       this.props.navigation.navigate('Home');
     }
   }
@@ -227,6 +227,7 @@ const mapStateToProps = state => {
     loading: state.users.loading,
     error: state.users.error,
     token: state.users.token,
+    userStatus: state.users.userStatus,
   };
 };
 

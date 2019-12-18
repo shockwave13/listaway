@@ -53,10 +53,10 @@ class CreateAccountScreen extends Component {
       this.dropDownAlertRef.alertWithType('error', 'Error', error);
       clearErrorProfile();
     }
-
-    if (success) {
-      this.props.navigation.navigate('Home');
-    }
+    //
+    //    if (success) {
+    //      this.props.navigation.navigate('Home');
+    //   }
   }
 
   handlePressSave = async () => {
@@ -140,8 +140,8 @@ class CreateAccountScreen extends Component {
                 </View>
                 <View style={globalStyles.block}>
                   <InputDefault
-                    name="full_name"
-                    value={profile.full_name}
+                    name="fullname"
+                    value={profile.fullname}
                     label="Full name"
                     onChangeText={onChangeProfile}
                   />

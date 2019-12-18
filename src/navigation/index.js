@@ -90,7 +90,7 @@ const AppNavigation = createStackNavigator(
     },
   },
   {
-    initialRouteName: 'Auth',
+    initialRouteName: 'CreateAccount',
     defaultNavigationOptions: {
       header: null,
     },

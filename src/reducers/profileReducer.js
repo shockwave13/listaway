@@ -8,7 +8,14 @@ import {
 } from '../actions/profileActions';
 
 const initState = {
-  profile: [],
+  profile: {
+    fullname: '',
+    direct_tel: '',
+    title: '',
+    website: '',
+    job_title: '',
+    office_tel: '',
+  },
   error: null,
   loading: true,
   success: false,

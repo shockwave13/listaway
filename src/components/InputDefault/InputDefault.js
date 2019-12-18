@@ -14,7 +14,7 @@ class InputDefault extends Component {
   }
 
   onChangeColor = newColor => {
-    if (this.props.value.length === 0) {
+    if (this.props.value === '') {
       this.setState({
         activeColor: 'red',
       });

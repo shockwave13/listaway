@@ -9,6 +9,7 @@ class HomeScreen extends Component {
   }
 
   componentDidMount() {
+    console.log('2222', this.props.userStatus);
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
   }
 

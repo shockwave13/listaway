@@ -46,9 +46,9 @@ class SignUpScreen extends Component {
   componentDidUpdate() {
     const {token, error, clearErrorUser, loading} = this.props;
 
-    if (token !== null) {
-      this.props.navigation.navigate('CreateAccount');
-    }
+    // if (token !== null) {
+    //   this.props.navigation.navigate('CreateAccount');
+    // }
 
     if (error !== null && loading === false) {
       this.dropDownAlertRef.alertWithType('error', 'Error', error);
@@ -57,22 +57,37 @@ class SignUpScreen extends Component {
   }
 
   handlePressSignUp = async () => {
-    const {fullName, email, password, confirmPassword, agree} = this.state;
+    const {
+      error,
+      fullName,
+      email,
+      password,
+      confirmPassword,
+      agree,
+    } = this.state;
     const {signUp} = this.props;
 
-    if (agree) {
-      signUp({
-        username: fullName,
-        email: email,
-        password1: password,
-        password2: confirmPassword,
-      });
-    } else {
+    if (agree !== true) {
       this.dropDownAlertRef.alertWithType(
         'error',
         'Error',
         'First agree terms of use',
       );
+    } else if (password !== confirmPassword) {
+      this.dropDownAlertRef.alertWithType(
+        'error',
+        'Error',
+        'Passwords not match',
+      );
+    } else {
+      signUp({
+        username: fullName,
+        email: email,
+        password1: password,
+      });
+      if (this.props.userStatus) {
+        this.props.navigation.navigate('CreateAccount');
+      }
     }
   };
   render() {
@@ -163,8 +178,9 @@ class SignUpScreen extends Component {
 const mapStateToProps = state => {
   return {
     loading: state.users.loading,
-    token: state.users.token,
+    //token: state.users.token,
     error: state.users.error,
+    userStatus: state.users.userStatus,
   };
 };
 
@@ -179,4 +195,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SignUpScreen);
